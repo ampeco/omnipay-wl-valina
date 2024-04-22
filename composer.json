@@ -1,6 +1,7 @@
 {
     "name": "ampeco/omnipay-wl-valina",
     "description": "Omnipay plugin for Worldline Valina",
+    "version": "1.0.0",
     "type": "library",
     "license": "MIT",
     "autoload": {
