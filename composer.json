@@ -17,13 +17,11 @@
     ],
     "require": {
         "omnipay/common": "^3.2",
-        "php": ">=8.1.0"
+        "php": "^8.1",
+        "nyholm/psr7": "^1.0"
     },
     "allow-plugins": {
         "php-http/discovery": true
-    },
-    "platform": {
-        "php": "8.1.26"
     },
     "config": {
         "allow-plugins": {
