@@ -2,7 +2,8 @@
 
 namespace Ampeco\OmnipayWlValina\Message;
 
-use Omnipay\Common\AbstractGateway;
+use Omnipay\Common\Http\ClientInterface;
+use Symfony\Component\HttpFoundation\Request as HttpRequest;
 
 /**
  * @method \Omnipay\Common\Message\NotificationInterface acceptNotification(array $options = array())
@@ -18,46 +19,36 @@ use Omnipay\Common\AbstractGateway;
  * @method \Omnipay\Common\Message\RequestInterface updateCard(array $options = array())
  * @method \Omnipay\Common\Message\RequestInterface deleteCard(array $options = array())
  */
-class CreateCardRequest extends AbstractGateway
+class CreateCardRequest extends AbstractRequest
 {
+    public function __construct(ClientInterface $httpClient, HttpRequest $httpRequest)
+    {
+        parent::__construct($httpClient, $httpRequest);
+
+    }
+
+    public function getEndpoint(): string
+    {
+        return '/hostedtokenizations';
+    }
+
+    public function getRequestMethod(): string
+    {
+        return 'POST';
+    }
 
     /**
      * @inheritDoc
      */
     public function getData()
     {
-        // TODO: Implement getData() method.
+        return [
+            'createCard' => true,
+        ];
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function sendData($data)
+    protected function createResponse(array $data, int $statusCode): Response
     {
-        // TODO: Implement sendData() method.
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getName()
-    {
-        // TODO: Implement getName() method.
-    }
-
-    public function __call(string $name, array $arguments)
-    {
-        // TODO: Implement @method \Omnipay\Common\Message\NotificationInterface acceptNotification(array $options = array())
-        // TODO: Implement @method \Omnipay\Common\Message\RequestInterface authorize(array $options = array())
-        // TODO: Implement @method \Omnipay\Common\Message\RequestInterface completeAuthorize(array $options = array())
-        // TODO: Implement @method \Omnipay\Common\Message\RequestInterface capture(array $options = array())
-        // TODO: Implement @method \Omnipay\Common\Message\RequestInterface purchase(array $options = array())
-        // TODO: Implement @method \Omnipay\Common\Message\RequestInterface completePurchase(array $options = array())
-        // TODO: Implement @method \Omnipay\Common\Message\RequestInterface refund(array $options = array())
-        // TODO: Implement @method \Omnipay\Common\Message\RequestInterface fetchTransaction(array $options = [])
-        // TODO: Implement @method \Omnipay\Common\Message\RequestInterface void(array $options = array())
-        // TODO: Implement @method \Omnipay\Common\Message\RequestInterface createCard(array $options = array())
-        // TODO: Implement @method \Omnipay\Common\Message\RequestInterface updateCard(array $options = array())
-        // TODO: Implement @method \Omnipay\Common\Message\RequestInterface deleteCard(array $options = array())
+        return new CreateCardResponse($this, $data, $statusCode);
     }
 }

@@ -2,10 +2,13 @@
 
 namespace Ampeco\OmnipayWlValina;
 
+use Ampeco\OmnipayWlValina\Message\CreateCardRequest;
+use Ampeco\OmnipayWlValina\Message\NotificationRequest;
+use DateTime;
+use DateTimeZone;
 use Omnipay\Common\AbstractGateway;
 
 /**
- * @method \Omnipay\Common\Message\NotificationInterface acceptNotification(array $options = array())
  * @method \Omnipay\Common\Message\RequestInterface authorize(array $options = array())
  * @method \Omnipay\Common\Message\RequestInterface completeAuthorize(array $options = array())
  * @method \Omnipay\Common\Message\RequestInterface capture(array $options = array())
@@ -19,8 +22,7 @@ use Omnipay\Common\AbstractGateway;
  */
 class Gateway extends AbstractGateway
 {
-    const API_URL_PROD = 'https://payment.direct.worldline-solutions.com/v2';
-    const API_URL_TEST = 'https://payment.preprod.direct.worldline-solutions.com/v2';
+    use CommonParameters;
 
     /**
      * @inheritDoc
@@ -30,15 +32,14 @@ class Gateway extends AbstractGateway
         return 'Valina';
     }
 
-    public function getBaseUrl(): string
-    {
-        return $this->getTestMode() ? static::API_URL_TEST : static::API_URL_PROD;
-    }
-
     public function createCard(array $options = [])
     {
-        return $this->createRequest(Message\CreateCardRequest::class, $options);
+        return $this->createRequest(CreateCardRequest::class, $options);
+    }
 
+    public function acceptNotification(array $requestData)
+    {
+        return $this->createRequest(NotificationRequest::class, $requestData);
     }
 
     public function __call(string $name, array $arguments)
@@ -55,5 +56,22 @@ class Gateway extends AbstractGateway
         // TODO: Implement @method \Omnipay\Common\Message\RequestInterface createCard(array $options = array())
         // TODO: Implement @method \Omnipay\Common\Message\RequestInterface updateCard(array $options = array())
         // TODO: Implement @method \Omnipay\Common\Message\RequestInterface deleteCard(array $options = array())
+    }
+
+
+
+    public function getMerchantId()
+    {
+        return $this->getParameter('merchant_id');
+    }
+
+    public function getApiKey()
+    {
+        return $this->getParameter('api_key');
+    }
+
+    public function getApiSecret()
+    {
+        return $this->getParameter('api_secret');
     }
 }
