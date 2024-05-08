@@ -40,7 +40,7 @@ abstract class AbstractRequest extends OmniPayAbstractRequest
      */
     protected function getHeaders(string $endpoint, $requestMethod): array
     {
-        $contentType = ($requestMethod !== 'GET') ? 'application/json' : '';
+        $contentType = in_array($requestMethod, ['GET', 'DELETE']) ? '' : 'application/json';
 
         return array_merge($this->signHeaders($endpoint, $requestMethod), [
             'Content-Type' => $contentType,
@@ -54,16 +54,29 @@ abstract class AbstractRequest extends OmniPayAbstractRequest
     public function sendData($data): Response
     {
         $requestMethod = $this->getRequestMethod();
-        $response = $this->httpClient->request(
-            $requestMethod,
-            $this->getBaseUrl() . $this->getMerchantId() . $this->getEndpoint(),
-            $this->getHeaders($this->getEndpoint(), $requestMethod),
-            json_encode($data),
-        );
-        return $this->createResponse(
-            json_decode($response->getBody()->getContents(), true, flags: JSON_THROW_ON_ERROR),
-            $response->getStatusCode(),
-        );
+        if($requestMethod === 'DELETE') {
+            $headersArray = $this->getHeaders($this->getEndpoint(). '/' . $data['token'], 'DELETE');
+            $response = $this->httpClient->request(
+                'DELETE',
+                $this->getBaseUrl() . $this->getMerchantId() . $this->getEndpoint() . '/' . $data['token'],
+                $headersArray,
+                ''
+            );
+            $statusCode = $response->getStatusCode();
+            return $this->createResponse([], $statusCode);
+        } else {
+            $response = $this->httpClient->request(
+                $requestMethod,
+                $this->getBaseUrl() . $this->getMerchantId() . $this->getEndpoint(),
+                $this->getHeaders($this->getEndpoint(), $requestMethod),
+                json_encode($data),
+            );
+            return $this->createResponse(
+                json_decode($response->getBody()->getContents(), true, flags: JSON_THROW_ON_ERROR),
+                $response->getStatusCode(),
+            );
+        }
+
     }
 
     /**
@@ -96,7 +109,7 @@ abstract class AbstractRequest extends OmniPayAbstractRequest
     private function createAuthorization(string $endpoint, string $requestMethod, string $dateTime): string
     {
         [$merchantId, $apiKey, $apiSecret] = $this->signSettings();
-        $contentType = ($requestMethod !== 'GET') ? 'application/json' : '';
+        $contentType = in_array($requestMethod, ['GET', 'DELETE']) ? '' : 'application/json';
         $endpointUrl = '/v2/' . $merchantId . $endpoint;
         $stringToHash = $requestMethod . "\n" . $contentType . "\n" . $dateTime . "\n" . $endpointUrl . "\n";
         // Convert stringToHash + key into byte array
