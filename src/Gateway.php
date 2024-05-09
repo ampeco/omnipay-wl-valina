@@ -8,6 +8,7 @@ use Ampeco\OmnipayWlValina\Message\CreateCardRequest;
 use Ampeco\OmnipayWlValina\Message\DeleteCardRequest;
 use Ampeco\OmnipayWlValina\Message\NotificationRequest;
 use Ampeco\OmnipayWlValina\Message\PurchaseRequest;
+use Ampeco\OmnipayWlValina\Message\VoidRequest;
 use Omnipay\Common\AbstractGateway;
 
 /**
@@ -15,7 +16,6 @@ use Omnipay\Common\AbstractGateway;
  * @method \Omnipay\Common\Message\RequestInterface completePurchase(array $options = array())
  * @method \Omnipay\Common\Message\RequestInterface refund(array $options = array())
  * @method \Omnipay\Common\Message\RequestInterface fetchTransaction(array $options = [])
- * @method \Omnipay\Common\Message\RequestInterface void(array $options = array())
  * @method \Omnipay\Common\Message\RequestInterface updateCard(array $options = array())
  */
 class Gateway extends AbstractGateway
@@ -60,34 +60,8 @@ class Gateway extends AbstractGateway
         return $this->createRequest(CaptureRequest::class, $parameters);
     }
 
-
-    public function __call(string $name, array $arguments)
+    public function void(array $parameters)
     {
-        // TODO: Implement @method \Omnipay\Common\Message\NotificationInterface acceptNotification(array $options = array())
-        // TODO: Implement @method \Omnipay\Common\Message\RequestInterface authorize(array $options = array())
-        // TODO: Implement @method \Omnipay\Common\Message\RequestInterface completeAuthorize(array $options = array())
-        // TODO: Implement @method \Omnipay\Common\Message\RequestInterface capture(array $options = array())
-        // TODO: Implement @method \Omnipay\Common\Message\RequestInterface purchase(array $options = array())
-        // TODO: Implement @method \Omnipay\Common\Message\RequestInterface completePurchase(array $options = array())
-        // TODO: Implement @method \Omnipay\Common\Message\RequestInterface refund(array $options = array())
-        // TODO: Implement @method \Omnipay\Common\Message\RequestInterface fetchTransaction(array $options = [])
-        // TODO: Implement @method \Omnipay\Common\Message\RequestInterface void(array $options = array())
-    }
-
-
-
-    public function getMerchantId()
-    {
-        return $this->getParameter('merchant_id');
-    }
-
-    public function getApiKey()
-    {
-        return $this->getParameter('api_key');
-    }
-
-    public function getApiSecret()
-    {
-        return $this->getParameter('api_secret');
+        return $this->createRequest(VoidRequest::class, $parameters);
     }
 }
