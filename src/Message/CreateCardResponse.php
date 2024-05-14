@@ -33,7 +33,7 @@ class CreateCardResponse extends Response implements RedirectResponseInterface
             && array_key_exists('hostedTokenizationId', $this->data);
     }
 
-    public function getTransactionReference()
+    public function getTransactionReference(): ?string
     {
      return $this->getHostedTokenizationId();
     }
