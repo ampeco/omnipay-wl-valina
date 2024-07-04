@@ -33,4 +33,14 @@ trait CommonParameters
     {
         return $this->getParameter('api_secret');
     }
+
+    public function setHostedTokenizationId($value): void
+    {
+        $this->setParameter('hostedTokenizationId', $value);
+    }
+
+    public function getHostedTokenizationId()
+    {
+        return $this->getParameter('hostedTokenizationId');
+    }
 }

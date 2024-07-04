@@ -10,6 +10,7 @@ class Response extends AbstractResponse
     const STATUS_CAPTURED = 'CAPTURED';
     const STATUS_PENDING_CAPTURE = 'PENDING_CAPTURE';
     const STATUS_CAPTURE_REQUESTED = 'CAPTURE_REQUESTED';
+    const STATUS_REDIRECTED = 'REDIRECTED';
 
     public function __construct(RequestInterface $request, $data, protected int $code)
     {
@@ -21,7 +22,7 @@ class Response extends AbstractResponse
      */
     public function isSuccessful(): bool
     {
-        return $this->code >= 200;
+        return $this->code >= 200 && $this->code < 300;
     }
 
     public function getTransactionReference(): ?string
