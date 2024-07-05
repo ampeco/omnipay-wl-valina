@@ -43,4 +43,14 @@ trait CommonParameters
     {
         return $this->getParameter('hostedTokenizationId');
     }
+
+    public function setPaymentId($value): void
+    {
+        $this->setParameter('paymentId', $value);
+    }
+
+    public function getPaymentId()
+    {
+        return $this->getParameter('paymentId');
+    }
 }
