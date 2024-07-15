@@ -53,4 +53,14 @@ trait CommonParameters
     {
         return $this->getParameter('paymentId');
     }
+
+    public function setTemplate($value): void
+    {
+         $this->setParameter('template', $value);
+    }
+
+    public function getTemplate()
+    {
+        return $this->getParameter('template');
+    }
 }

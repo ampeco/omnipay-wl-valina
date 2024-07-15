@@ -44,6 +44,7 @@ class CreateCardRequest extends AbstractRequest
     {
         return [
             'createCard' => true,
+            'variant' => $this->getTemplate(),
         ];
     }
 
