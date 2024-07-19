@@ -63,4 +63,14 @@ trait CommonParameters
     {
         return $this->getParameter('template');
     }
+
+    public function setLocale($value): void
+    {
+        $this->setParameter('locale', $value);
+    }
+
+    public function getLocale()
+    {
+        return $this->getParameter('locale');
+    }
 }

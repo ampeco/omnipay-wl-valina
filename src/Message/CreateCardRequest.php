@@ -24,7 +24,6 @@ class CreateCardRequest extends AbstractRequest
     public function __construct(ClientInterface $httpClient, HttpRequest $httpRequest)
     {
         parent::__construct($httpClient, $httpRequest);
-
     }
 
     public function getEndpoint(): string
@@ -45,6 +44,7 @@ class CreateCardRequest extends AbstractRequest
         return [
             'createCard' => true,
             'variant' => $this->getTemplate(),
+            'locale' => $this->getLocale(),
         ];
     }
 
