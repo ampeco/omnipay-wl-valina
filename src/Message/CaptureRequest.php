@@ -15,6 +15,7 @@ class CaptureRequest extends AbstractRequest
         return [
             //EUR is a 2-decimals currency, the value 1234 will result in EUR 12.34
             'amount' => number_format($this->getAmount(), 2, '', ''),
+            'isFinal' => true,
         ];
     }
 
