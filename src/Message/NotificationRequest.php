@@ -41,7 +41,7 @@ class NotificationRequest extends AbstractRequest
         $exec = curl_exec($ch);
         $statusCode = curl_getinfo($ch, \CURLINFO_RESPONSE_CODE);
         return $this->createResponse(
-            json_decode($exec, true),
+            json_decode($exec, true, flags: JSON_THROW_ON_ERROR),
             $statusCode,
         );
 
