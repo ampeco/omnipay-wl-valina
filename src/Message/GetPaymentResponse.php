@@ -13,15 +13,4 @@ class GetPaymentResponse extends Response {
     {
         return $this->data['paymentOutput']['cardPaymentMethodSpecificOutput']['token'];
     }
-
-    public function getCardNumber()
-    {
-        return @$this->data['paymentOutput']['cardPaymentMethodSpecificOutput']['card']['cardNumber'];
-    }
-
-    public function getExpiryDate()
-    {
-        return @$this->data['paymentOutput']['cardPaymentMethodSpecificOutput']['card']['expiryDate'];
-    }
-
 }
