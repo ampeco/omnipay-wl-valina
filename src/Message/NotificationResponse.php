@@ -19,11 +19,6 @@ class NotificationResponse extends Response
         return @$this->data['token']['id'];
     }
 
-    public function getCardNumber()
-    {
-        return @$this->data['token']['card']['data']['cardWithoutCvv']['cardNumber'];
-    }
-
     public function getTransactionStatus(): string
     {
         return $this->isSuccessful() ? NotificationInterface::STATUS_COMPLETED : NotificationInterface::STATUS_FAILED;
@@ -32,10 +27,5 @@ class NotificationResponse extends Response
     public function isForTokenization(): bool
     {
         return $this->data['tokenStatus'] === 'CREATED';
-    }
-
-    public function getExpiryDate()
-    {
-        return @$this->data['token']['card']['data']['cardWithoutCvv']['expiryDate'];
     }
 }

@@ -77,9 +77,4 @@ class Gateway extends AbstractGateway
     {
         return $this->createRequest(GetPaymentRequest::class, $parameters);
     }
-
-    public function getToken(array $parameters)
-    {
-        return $this->createRequest(GetTokenRequest::class, $parameters);
-    }
 }

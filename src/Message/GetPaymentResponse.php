@@ -13,4 +13,22 @@ class GetPaymentResponse extends Response {
     {
         return $this->data['paymentOutput']['cardPaymentMethodSpecificOutput']['token'];
     }
+
+    public function getCardNumber()
+    {
+        $maskedCardNumber = @$this->data['paymentOutput']['cardPaymentMethodSpecificOutput']['card']['cardNumber'];
+        $cardBin = $this->getCardBin();
+
+        return substr_replace($maskedCardNumber, $cardBin, 0, strlen($cardBin));
+    }
+
+    public function getCardBin()
+    {
+        return @$this->data['paymentOutput']['cardPaymentMethodSpecificOutput']['card']['bin'];
+    }
+
+    public function getExpiryDate()
+    {
+        return @$this->data['paymentOutput']['cardPaymentMethodSpecificOutput']['card']['expiryDate'];
+    }
 }
