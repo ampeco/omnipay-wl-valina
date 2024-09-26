@@ -25,6 +25,8 @@ class InitialPurchaseRequest extends AbstractRequest
                     'skipAuthentication' => false,
                     'challengeIndicator' => 'challenge-requested',
                 ],
+                'unscheduledCardOnFileRequestor' => 'cardholderInitiated',
+                'unscheduledCardOnFileSequenceIndicator' => 'first',
             ],
             'order' => [
                 'amountOfMoney' => [
