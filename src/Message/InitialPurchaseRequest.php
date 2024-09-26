@@ -23,7 +23,7 @@ class InitialPurchaseRequest extends AbstractRequest
                 'returnUrl' => $this->getReturnUrl(),
                 'threeDSecure' => [
                     'skipAuthentication' => false,
-                    'challengeIndicator' => 'no-preference',
+                    'challengeIndicator' => 'challenge-requested',
                 ],
             ],
             'order' => [
