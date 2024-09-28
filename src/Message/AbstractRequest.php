@@ -54,29 +54,32 @@ abstract class AbstractRequest extends OmniPayAbstractRequest
     public function sendData($data): Response
     {
         $requestMethod = $this->getRequestMethod();
-        if($requestMethod === 'DELETE') {
-            $headersArray = $this->getHeaders($this->getEndpoint(). '/' . $data['token'], 'DELETE');
-            $response = $this->httpClient->request(
-                'DELETE',
-                $this->getBaseUrl() . $this->getMerchantId() . $this->getEndpoint() . '/' . $data['token'],
-                $headersArray,
-                ''
-            );
-            $statusCode = $response->getStatusCode();
-            return $this->createResponse([], $statusCode);
-        } else {
-            $response = $this->httpClient->request(
-                $requestMethod,
-                $this->getBaseUrl() . $this->getMerchantId() . $this->getEndpoint(),
-                $this->getHeaders($this->getEndpoint(), $requestMethod),
-                json_encode($data),
-            );
-            return $this->createResponse(
-                json_decode($response->getBody()->getContents(), true, flags: JSON_THROW_ON_ERROR),
-                $response->getStatusCode(),
-            );
-        }
+        $url = $this->getBaseUrl() . $this->getMerchantId() . $this->getEndpoint();
 
+        // Append token to URL for DELETE requests
+        $url .= $requestMethod === 'DELETE' ? '/' . $data['token'] : '';
+
+        // Prepare headers
+        $headers = $this->getHeaders($url, $requestMethod);
+
+        // Set request body; empty for DELETE
+        $body = $requestMethod === 'DELETE' ? '' : json_encode($data);
+
+        // Send request
+        $response = $this->httpClient->request($requestMethod, $url, $headers, $body);
+
+        // Decode response body, empty for DELETE
+        $responseData = $requestMethod === 'DELETE' ? [] : json_decode($response->getBody()->getContents(), true, flags: JSON_THROW_ON_ERROR);
+
+        return $this->createResponse($responseData, $response->getStatusCode());
+    }
+
+    /** Used for logging only to get the method and endpoint of the request */
+    public function getEndpointLogData(){
+        return [
+            'method' => $this->getRequestMethod(),
+            'url' => $this->getBaseUrl() . $this->getMerchantId() . $this->getEndpoint(),
+        ];
     }
 
     /**
