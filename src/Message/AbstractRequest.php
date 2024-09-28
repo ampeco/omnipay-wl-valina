@@ -60,7 +60,7 @@ abstract class AbstractRequest extends OmniPayAbstractRequest
         $url .= $requestMethod === 'DELETE' ? '/' . $data['token'] : '';
 
         // Prepare headers
-        $headers = $this->getHeaders($url, $requestMethod);
+        $headers = $this->getHeaders($this->getEndpoint(), $requestMethod);
 
         // Set request body; empty for DELETE
         $body = $requestMethod === 'DELETE' ? '' : json_encode($data);
