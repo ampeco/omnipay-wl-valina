@@ -54,19 +54,20 @@ abstract class AbstractRequest extends OmniPayAbstractRequest
     public function sendData($data): Response
     {
         $requestMethod = $this->getRequestMethod();
-        $url = $this->getBaseUrl() . $this->getMerchantId() . $this->getEndpoint();
+
+        $url = $this->getEndpoint();
 
         // Append token to URL for DELETE requests
         $url .= $requestMethod === 'DELETE' ? '/' . $data['token'] : '';
 
         // Prepare headers
-        $headers = $this->getHeaders($this->getEndpoint(), $requestMethod);
+        $headers = $this->getHeaders($url, $requestMethod);
 
         // Set request body; empty for DELETE
         $body = $requestMethod === 'DELETE' ? '' : json_encode($data);
 
         // Send request
-        $response = $this->httpClient->request($requestMethod, $url, $headers, $body);
+        $response = $this->httpClient->request($requestMethod, $this->getBaseUrl() . $this->getMerchantId() . $url, $headers, $body);
 
         // Decode response body, empty for DELETE
         $responseData = $requestMethod === 'DELETE' ? [] : json_decode($response->getBody()->getContents(), true, flags: JSON_THROW_ON_ERROR);
