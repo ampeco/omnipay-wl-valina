@@ -21,7 +21,7 @@ class InitialPurchaseResponse extends Response
 
     public function getTransactionReference(): ?string
     {
-        return $this->data['payment']['id'] ?? null;
+        return $this->data['paymentResult']['payment']['id'] ?? parent::getTransactionReference();
     }
 
     public function getMessage()

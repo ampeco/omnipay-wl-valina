@@ -37,7 +37,7 @@ class Response extends AbstractResponse
         return @$this->data['payment']['id'] ?? null;
     }
 
-    public function getMessage(): ?string
+    public function getMessage()
     {
         /**
          * Example:
