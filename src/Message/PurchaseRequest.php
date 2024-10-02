@@ -12,8 +12,13 @@ class PurchaseRequest extends AuthorizeRequest
     public function getData(): array
     {
         $data = parent::getData();
-        $data['cardPaymentMethodSpecificInput']['authorizationMode'] = 'SALE';
 
+        $data['cardPaymentMethodSpecificInput'] = [
+            'authorizationMode' => 'SALE',
+            'threeDSecure' => [
+                'challengeIndicator' => 'no-challenge-requested',
+            ],
+        ];
         return $data;
     }
 }
