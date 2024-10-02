@@ -42,13 +42,17 @@ class Response extends AbstractResponse
         /**
          * Example:
          *
-         * Error ID: EXTERNAL_ACQUIRER_ERROR
-         * Error Code: 30511001
-         * Error Message: Insufficient funds
+         * Status: REJECTED
+         * Error ID: AUTHENTICATION_FAILURE
+         * Error Code: 40001134
+         * Error Message: Authentication failed. Please retry or cancel
          *
          */
-        if (isset($this->data['errors'])) {
-            return implode(', ', array_map(fn ($error) => 'Error ID: '.  $error['id'] . "\nError Code: " . ($error['errorCode'] ?? '') .  "\nError Message: " . (empty($error['message']) ? $this->getErrorMessage($error['errorCode']) : $error['message']) , $this->data['errors']));
+        $status = $this->data['paymentResult']['payment']['status'] ?? $this->data['status'] ?? '';
+
+        $errors = $this->data['statusOutput']['errors'] ?? $this->data['errors'];
+        if ($errors) {
+            return implode(', ', array_map(fn ($error) =>  (!empty($status) ? 'Status: ' . "$status\n"  : '') . "Error ID: ".  $error['id'] . "\nError Code: " . ($error['errorCode'] ?? '') .  "\nError Message: " . (empty($error['message']) ? $this->getErrorMessage($error['errorCode']) : $error['message']) , $errors));
         }
 
         return '';
