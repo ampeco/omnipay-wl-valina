@@ -24,15 +24,6 @@ class InitialPurchaseResponse extends Response
         return $this->data['paymentResult']['payment']['id'] ?? parent::getTransactionReference();
     }
 
-    public function getMessage()
-    {
-        if (isset($this->data['errors'])) {
-            return implode(', ', array_map(fn ($error) => $error['id'] . ':' . ($error['errorCode'] ?? '') . ($error['message'] ?? ''), $this->data['errors']));
-        }
-
-        return '';
-    }
-
     public function getCode()
     {
         return @$this->data['errors'][0]['errorCode'] ?? parent::getCode();
