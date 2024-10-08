@@ -2,11 +2,31 @@
 
 namespace Ampeco\OmnipayWlValina\Message;
 
-class GetPaymentResponse extends Response {
+class GetPaymentResponse extends Response
+{
+    public function getStatusCategory()
+    {
+        return $this->data['statusOutput']['statusCategory'] ?? [];
+    }
+
+    // TODO: Move the bellow 2 methods in the parent class
+    // implemented based on - https://docs.direct.worldline-solutions.com/en/integration/api-developer-guide/statuses
+    public function isPending(): bool
+    {
+        return in_array($this->getStatusCategory(), [
+            self::STATUS_CATEGORY_CREATED,
+            self::STATUS_CATEGORY_PENDING_PAYMENT,
+            self::STATUS_CATEGORY_PENDING_MERCHANT,
+            self::STATUS_CATEGORY_PENDING_CONNECT_OR_3RD_PARTY,
+        ]);
+    }
 
     public function isSuccessful(): bool
     {
-        return parent::isSuccessful() && $this->data['status'] === self::STATUS_PENDING_CAPTURE;
+        return parent::isSuccessful() && in_array($this->getStatusCategory(), [
+            self::STATUS_CATEGORY_REFUNDED,
+            self::STATUS_CATEGORY_COMPLETED,
+        ]);
     }
 
     public function getToken()

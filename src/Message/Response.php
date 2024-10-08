@@ -7,6 +7,14 @@ use Omnipay\Common\Message\RequestInterface;
 
 class Response extends AbstractResponse
 {
+    const STATUS_CATEGORY_CREATED = 'CREATED';
+    const STATUS_CATEGORY_UNSUCCESSFUL = 'UNSUCCESSFUL';
+    const STATUS_CATEGORY_PENDING_PAYMENT = 'PENDING_PAYMENT';
+    const STATUS_CATEGORY_PENDING_MERCHANT = 'PENDING_MERCHANT';
+    const STATUS_CATEGORY_PENDING_CONNECT_OR_3RD_PARTY = 'PENDING_CONNECT_OR_3RD_PARTY';
+    const STATUS_CATEGORY_REFUNDED = 'REFUNDED';
+    const STATUS_CATEGORY_COMPLETED = 'COMPLETED';
+
     const STATUS_CREATED = 'CREATED';
     const STATUS_CANCELLED = 'CANCELLED';
     const STATUS_REJECTED = 'REJECTED';
@@ -46,13 +54,12 @@ class Response extends AbstractResponse
          * Error ID: AUTHENTICATION_FAILURE
          * Error Code: 40001134
          * Error Message: Authentication failed. Please retry or cancel
-         *
          */
         $status = $this->data['paymentResult']['payment']['status'] ?? $this->data['status'] ?? '';
 
-        $errors = $this->data['statusOutput']['errors'] ?? $this->data['errors'];
+        $errors = $this->data['paymentResult']['payment']['statusOutput']['errors'] ?? $this->data['statusOutput']['errors'] ?? $this->data['errors'] ?? [];
         if ($errors) {
-            return implode(', ', array_map(fn ($error) =>  (!empty($status) ? 'Status: ' . "$status\n"  : '') . "Error ID: ".  $error['id'] . "\nError Code: " . ($error['errorCode'] ?? '') .  "\nError Message: " . (empty($error['message']) ? $this->getErrorMessage($error['errorCode']) : $error['message']) , $errors));
+            return implode(', ', array_map(fn ($error) => (!empty($status) ? 'Status: ' . "$status, " : '') . 'Error ID: ' . $error['id'] . ', Error Code: ' . ($error['errorCode'] ?? '') . ', Error Message: ' . (empty($error['message']) ? $this->getErrorMessage($error['errorCode']) : $error['message']), $errors));
         }
 
         return '';
@@ -60,7 +67,9 @@ class Response extends AbstractResponse
 
     public function getCode()
     {
-        return @$this->data['errors'][0]['errorCode'];
+        $errors = $this->data['paymentResult']['payment']['statusOutput']['errors'] ?? $this->data['statusOutput']['errors'] ?? $this->data['errors'] ?? [];
+
+        return @$errors[0]['errorCode'];
     }
 
     protected function getErrorMessage($errorCode)
@@ -70,7 +79,7 @@ class Response extends AbstractResponse
         if (array_key_exists($errorCode, $errors)) {
             return $errors[$errorCode];
         } else {
-            return "Error code not found.";
+            return 'Error code not found.';
         }
     }
 
