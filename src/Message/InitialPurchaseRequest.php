@@ -36,8 +36,13 @@ class InitialPurchaseRequest extends AbstractRequest
                 ],
                 'customer' => [
                     'device' => [
+                        // TODO: Ask David is it acceptHeader or acceptHeaders. As well hardcoded like this in my opinion are only increasing the chance for fraud - can we get them from the SDK or somehow pass them to the notify url from valina.blade.php
                         'acceptHeader' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
                         'userAgent' => 'Mozilla/5.0(WindowsNT10.0;Win64;x64)AppleWebKit/537.36(KHTML,likeGecko)Chrome/75.0.3770.142Safari/537.36',
+                        'locale' => $this->getLocale(),
+                    ],
+                    'contactDetails' => [
+                        'emailAddress' => $this->getUserEmail(),
                     ],
                 ],
             ],

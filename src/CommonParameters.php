@@ -56,7 +56,7 @@ trait CommonParameters
 
     public function setTemplate($value): void
     {
-         $this->setParameter('template', $value);
+        $this->setParameter('template', $value);
     }
 
     public function getTemplate()
@@ -72,5 +72,15 @@ trait CommonParameters
     public function getLocale()
     {
         return $this->getParameter('locale');
+    }
+
+    public function setUserEmail($value): void
+    {
+        $this->setParameter('userEmail', $value);
+    }
+
+    public function getUserEmail()
+    {
+        return $this->getParameter('userEmail');
     }
 }
