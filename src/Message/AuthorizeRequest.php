@@ -24,12 +24,34 @@ class AuthorizeRequest extends AbstractRequest
                 'token' => $this->getToken(),
                 'unscheduledCardOnFileRequestor' => 'merchantInitiated',
                 'unscheduledCardOnFileSequenceIndicator' => 'subsequent',
+                'threeDSecure' => [
+                    'skipAuthentication' => true,
+                    'challengeIndicator' => 'no-challenge-requested',
+                    'redirectionData' => [
+                        'returnUrl' => $this->getReturnUrl(),
+                    ],
+                ],
             ],
             'order' => [
                 'amountOfMoney' => [
                     //EUR is a 2-decimals currency, the value 1234 will result in EUR 12.34
                     'amount' => number_format($this->getAmount(), 2, '', ''),
                     'currencyCode' => $this->getCurrency(),
+                ],
+                'customer' => [
+                    'device' => [
+                        'acceptHeader' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
+                        'userAgent' => 'Mozilla/5.0(WindowsNT10.0;Win64;x64)AppleWebKit/537.36(KHTML,likeGecko)Chrome/75.0.3770.142Safari/537.36',
+                        'locale' => $this->getLocale(),
+                    ],
+                    'contactDetails' => [
+                        'emailAddress' => $this->getUserEmail(),
+                    ],
+                    'billingAddress' => [
+                        'city' => $this->getCity(),
+                        'countryCode' => $this->getCountryCode(),
+                        'street' => $this->getStreet(),
+                    ],
                 ],
             ],
         ];

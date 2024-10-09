@@ -83,4 +83,34 @@ trait CommonParameters
     {
         return $this->getParameter('userEmail');
     }
+
+    public function setCity($value): void
+    {
+        $this->setParameter('city', $value);
+    }
+
+    public function getCity()
+    {
+        return $this->getParameter('city');
+    }
+
+    public function setCountryCode($value): void
+    {
+        $this->setParameter('countryCode', $value);
+    }
+
+    public function getCountryCode()
+    {
+        return $this->getParameter('countryCode');
+    }
+
+    public function setStreet($value): void
+    {
+        $this->setParameter('street', $value);
+    }
+
+    public function getStreet()
+    {
+        return $this->getParameter('street');
+    }
 }
