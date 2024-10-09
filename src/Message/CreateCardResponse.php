@@ -13,18 +13,13 @@ class CreateCardResponse extends Response implements RedirectResponseInterface
         return true;
     }
 
-    public function getHostedTokenizationId()
-    {
-        return $this->data['hostedTokenizationId'];
-    }
-
     /** Because valina wants to build the tokenization page
-    * Due to iframe security restrictions the HTML/Javascript code must be rendered in a view
-    * Then we need to send the view to the mobile's Webview
-    **/
+     * Due to iframe security restrictions the HTML/Javascript code must be rendered in a view
+     * Then we need to send the view to the mobile's Webview
+     **/
     public function getRedirectUrl(): string
     {
-       return '';
+        return '';
     }
 
     public function isSuccessful(): bool
@@ -35,6 +30,6 @@ class CreateCardResponse extends Response implements RedirectResponseInterface
 
     public function getTransactionReference(): ?string
     {
-     return $this->getHostedTokenizationId();
+        return $this->data['hostedTokenizationId'] ?? '';
     }
 }

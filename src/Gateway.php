@@ -7,7 +7,6 @@ use Ampeco\OmnipayWlValina\Message\CaptureRequest;
 use Ampeco\OmnipayWlValina\Message\CreateCardRequest;
 use Ampeco\OmnipayWlValina\Message\DeleteCardRequest;
 use Ampeco\OmnipayWlValina\Message\GetPaymentRequest;
-use Ampeco\OmnipayWlValina\Message\GetTokenRequest;
 use Ampeco\OmnipayWlValina\Message\InitialPurchaseRequest;
 use Ampeco\OmnipayWlValina\Message\NotificationRequest;
 use Ampeco\OmnipayWlValina\Message\PurchaseRequest;
@@ -76,5 +75,13 @@ class Gateway extends AbstractGateway
     public function getPayment(array $parameters)
     {
         return $this->createRequest(GetPaymentRequest::class, $parameters);
+    }
+
+    public function isHostedTokenizationReference(string $reference): bool
+    {
+        // Assumed based on real data, more info about hosted tokenization bellow
+        // https://docs.direct.worldline-solutions.com/en/integration/basic-integration-methods/hosted-tokenization-page#sendcreatepaymentrequest
+        // Nobody says it will always be 32 characters long
+        return strlen($reference) === 32;
     }
 }

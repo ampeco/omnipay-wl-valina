@@ -18,6 +18,9 @@ class AuthorizeRequest extends AbstractRequest
     {
         return [
             'cardPaymentMethodSpecificInput' => [
+                'authorizationMode' => 'FINAL_AUTHORIZATION',
+                'transactionChannel' => 'ECOMMERCE',
+                'returnUrl' => $this->getReturnUrl(),
                 'token' => $this->getToken(),
                 'unscheduledCardOnFileRequestor' => 'merchantInitiated',
                 'unscheduledCardOnFileSequenceIndicator' => 'subsequent',
@@ -34,7 +37,6 @@ class AuthorizeRequest extends AbstractRequest
 
     protected function createResponse(array $data, int $statusCode): Response
     {
-        return $this->response = new AuthorizeResponse($this, $data, $statusCode);
+        return $this->response = new CreatePaymentResponse($this, $data, $statusCode);
     }
-
 }

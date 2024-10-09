@@ -4,29 +4,46 @@ namespace Ampeco\OmnipayWlValina\Message;
 
 class GetPaymentResponse extends Response
 {
-    public function getStatusCategory()
+    public function getStatus(): string
     {
-        return $this->data['statusOutput']['statusCategory'] ?? [];
+        return $this->data['status'] ?? '';
     }
 
-    // TODO: Move the bellow 2 methods in the parent class
-    // implemented based on - https://docs.direct.worldline-solutions.com/en/integration/api-developer-guide/statuses
+    public function getStatusCategory(): string
+    {
+        return $this->data['statusOutput']['statusCategory'] ?? '';
+    }
+
     public function isPending(): bool
     {
         return in_array($this->getStatusCategory(), [
             self::STATUS_CATEGORY_CREATED,
             self::STATUS_CATEGORY_PENDING_PAYMENT,
-            self::STATUS_CATEGORY_PENDING_MERCHANT,
             self::STATUS_CATEGORY_PENDING_CONNECT_OR_3RD_PARTY,
         ]);
     }
 
+    public function isRedirect(): bool
+    {
+        return $this->getStatus() == self::STATUS_REDIRECTED && $this->getRedirectUrl();
+    }
+
     public function isSuccessful(): bool
     {
-        return parent::isSuccessful() && in_array($this->getStatusCategory(), [
-            self::STATUS_CATEGORY_REFUNDED,
-            self::STATUS_CATEGORY_COMPLETED,
-        ]);
+        if ($this->isRedirect()) {
+            return false;
+        }
+
+        return parent::isSuccessful() && (
+            $this->getStatusCategory() === self::STATUS_CATEGORY_REFUNDED ||
+            $this->getStatusCategory() === self::STATUS_CATEGORY_COMPLETED ||
+            ($this->getStatusCategory() == self::STATUS_CATEGORY_PENDING_MERCHANT && $this->getStatus() === self::STATUS_PENDING_CAPTURE)
+        );
+    }
+
+    public function getTransactionReference(): ?string
+    {
+        return $this->data['id'] ?? null;
     }
 
     public function getToken()

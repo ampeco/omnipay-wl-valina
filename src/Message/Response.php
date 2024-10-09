@@ -42,7 +42,7 @@ class Response extends AbstractResponse
 
     public function getTransactionReference(): ?string
     {
-        return @$this->data['payment']['id'] ?? null;
+        return $this->data['payment']['id'] ?? null;
     }
 
     public function getMessage()

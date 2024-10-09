@@ -52,6 +52,6 @@ class InitialPurchaseRequest extends AbstractRequest
 
     protected function createResponse(array $data, int $statusCode): Response
     {
-        return $this->response = new InitialPurchaseResponse($this, $data, $statusCode);
+        return $this->response = new CreatePaymentResponse($this, $data, $statusCode);
     }
 }
