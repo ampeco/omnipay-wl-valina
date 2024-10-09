@@ -8,9 +8,7 @@ class PurchaseRequest extends AuthorizeRequest
     {
         $data = parent::getData();
 
-        // fake that all purchases are ev driver initiated, hoping the response will contain 3DS challenge redirect url that we can handle
-        // TODO: If this doesn't work after test on QA, delete it or change it to merchantInitiated
-        $data['cardPaymentMethodSpecificInput']['unscheduledCardOnFileRequestor'] = 'cardholderInitiated';
+        $data['cardPaymentMethodSpecificInput']['unscheduledCardOnFileRequestor'] = 'merchantInitiated';
         $data['cardPaymentMethodSpecificInput']['unscheduledCardOnFileSequenceIndicator'] = 'subsequent';
         $data['cardPaymentMethodSpecificInput']['authorizationMode'] = 'SALE';
         // TODO: try with no-challenge-requested-consumer-authentication-performed after David's feedback
