@@ -113,4 +113,24 @@ trait CommonParameters
     {
         return $this->getParameter('street');
     }
+
+    public function setAcceptHeader($value): void
+    {
+        $this->setParameter('acceptHeader', $value);
+    }
+
+    public function getAcceptHeader()
+    {
+        return $this->getParameter('acceptHeader');
+    }
+
+    public function setUserAgent($value): void
+    {
+        $this->setParameter('userAgent', $value);
+    }
+
+    public function getUserAgent()
+    {
+        return $this->getParameter('userAgent');
+    }
 }

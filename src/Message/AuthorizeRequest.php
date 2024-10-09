@@ -37,8 +37,11 @@ class AuthorizeRequest extends AbstractRequest
                 ],
                 'customer' => [
                     'device' => [
-                        'acceptHeader' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
-                        'userAgent' => 'Mozilla/5.0(WindowsNT10.0;Win64;x64)AppleWebKit/537.36(KHTML,likeGecko)Chrome/75.0.3770.142Safari/537.36',
+                        //TODO: Leave the old ones in case the dynamic ones are not working
+//                        'acceptHeader' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
+//                        'userAgent' => 'Mozilla/5.0(WindowsNT10.0;Win64;x64)AppleWebKit/537.36(KHTML,likeGecko)Chrome/75.0.3770.142Safari/537.36',
+                        'acceptHeader' => $this->getAcceptHeader(),
+                        'userAgent' => $this->getUserAgent(),
                         'locale' => $this->getLocale(),
                     ],
                     'contactDetails' => [
