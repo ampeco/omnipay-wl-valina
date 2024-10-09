@@ -74,14 +74,14 @@ trait CommonParameters
         return $this->getParameter('locale');
     }
 
-    public function setUserEmail($value): void
+    public function setEmail($value): void
     {
-        $this->setParameter('userEmail', $value);
+        $this->setParameter('email', $value);
     }
 
-    public function getUserEmail()
+    public function getEmail()
     {
-        return $this->getParameter('userEmail');
+        return $this->getParameter('email');
     }
 
     public function setCity($value): void

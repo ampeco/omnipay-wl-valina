@@ -45,7 +45,7 @@ class AuthorizeRequest extends AbstractRequest
                         'locale' => $this->getLocale(),
                     ],
                     'contactDetails' => [
-                        'emailAddress' => $this->getUserEmail(),
+                        'emailAddress' => $this->getEmail(),
                     ],
                     'billingAddress' => [
                         'city' => $this->getCity(),
