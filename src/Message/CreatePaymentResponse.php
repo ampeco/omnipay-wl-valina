@@ -37,7 +37,7 @@ class CreatePaymentResponse extends Response
         return parent::isSuccessful() && (
             $this->getStatusCategory() === self::STATUS_CATEGORY_REFUNDED ||
             $this->getStatusCategory() === self::STATUS_CATEGORY_COMPLETED ||
-            ($this->getStatusCategory() == self::STATUS_CATEGORY_PENDING_MERCHANT && $this->getStatus() === self::STATUS_PENDING_CAPTURE)
+            ($this->getStatusCategory() === self::STATUS_CATEGORY_PENDING_MERCHANT && $this->getStatus() === self::STATUS_PENDING_CAPTURE)
         );
     }
 

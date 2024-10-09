@@ -27,9 +27,6 @@ class AuthorizeRequest extends AbstractRequest
                 'threeDSecure' => [
                     'skipAuthentication' => true,
                     'challengeIndicator' => 'no-challenge-requested',
-                    'redirectionData' => [
-                        'returnUrl' => $this->getReturnUrl(),
-                    ],
                 ],
             ],
             'order' => [
