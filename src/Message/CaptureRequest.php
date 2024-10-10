@@ -4,17 +4,15 @@ namespace Ampeco\OmnipayWlValina\Message;
 
 class CaptureRequest extends AbstractRequest
 {
-
     public function getEndpoint(): string
     {
-        return  '/payments/' . $this->getTransactionReference() . '/capture';
+        return '/payments/' . $this->getTransactionReference() . '/capture';
     }
 
     public function getData()
     {
         return [
-            //EUR is a 2-decimals currency, the value 1234 will result in EUR 12.34
-            'amount' => number_format($this->getAmount(), 2, '', ''),
+            'amount' => $this->getAmountInteger(),
             'isFinal' => true,
         ];
     }
