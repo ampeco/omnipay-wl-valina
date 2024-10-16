@@ -133,4 +133,54 @@ trait CommonParameters
     {
         return $this->getParameter('userAgent');
     }
+
+    public function setColorDepth($value): void
+    {
+        $this->setParameter('colorDepth', $value);
+    }
+
+    public function getColorDepth()
+    {
+        return $this->getParameter('colorDepth');
+    }
+
+    public function setScreenHeight($value): void
+    {
+        $this->setParameter('screenHeight', $value);
+    }
+
+    public function getScreenHeight()
+    {
+        return $this->getParameter('screenHeight');
+    }
+
+    public function setScreenWidth($value): void
+    {
+        $this->setParameter('screenWidth', $value);
+    }
+
+    public function getScreenWidth()
+    {
+        return $this->getParameter('screenWidth');
+    }
+
+    public function setIpAddress($value): void
+    {
+        $this->setParameter('ipAddress', $value);
+    }
+
+    public function getIpAddress()
+    {
+        return $this->getParameter('ipAddress');
+    }
+
+    public function setTimezoneOffsetUtcMinutes($value): void
+    {
+        $this->setParameter('timezoneOffsetUtcMinutes', $value);
+    }
+
+    public function getTimezoneOffsetUtcMinutes()
+    {
+        return $this->getParameter('timezoneOffsetUtcMinutes');
+    }
 }
