@@ -19,7 +19,7 @@ class InitialPurchaseRequest extends AuthorizeRequest
         $data = parent::getData();
 
         $data['cardPaymentMethodSpecificInput']['threeDSecure']['skipAuthentication'] = false;
-        $data['cardPaymentMethodSpecificInput']['threeDSecure']['challengeIndicator'] = 'challenge-requested';
+        $data['cardPaymentMethodSpecificInput']['threeDSecure']['challengeIndicator'] = 'challenge-required';
         $data['cardPaymentMethodSpecificInput']['unscheduledCardOnFileRequestor'] = 'cardholderInitiated';
         $data['cardPaymentMethodSpecificInput']['unscheduledCardOnFileSequenceIndicator'] = 'first';
         $data['hostedTokenizationId'] = $this->getHostedTokenizationId();
