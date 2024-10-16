@@ -29,22 +29,28 @@ class InitialPurchaseRequest extends AuthorizeRequest
 
     public function getCustomerData(): array
     {
+        $deviceData = [
+            'acceptHeader' => $this->getAcceptHeader(),
+            'browserData' => array_filter([
+                'colorDepth' => $this->getColorDepth(),
+                'javaEnabled' => true,
+                'javaScriptEnabled' => true,
+                'screenHeight' => $this->getScreenHeight(),
+                'screenWidth' => $this->getScreenWidth(),
+            ], fn ($value) => true),
+            'ipAddress' => $this->getIpAddress(),
+            'locale' => $this->getLocale(),
+            'timezoneOffsetUtcMinutes' => $this->getTimezoneOffsetUtcMinutes(),
+            'userAgent' => $this->getUserAgent(),
+        ];
+
+        if ($deviceData['ipAddress'] === null) {
+            unset($deviceData['ipAddress']);
+        }
+
         return [
             'customer' => [
-                'device' => [
-                    'acceptHeader' => $this->getAcceptHeader(),
-                    'browserData' => [
-                        'colorDepth' => $this->getColorDepth(),
-                        'javaEnabled' => true,
-                        'javaScriptEnabled' => true,
-                        'screenHeight' => $this->getScreenHeight(),
-                        'screenWidth' => $this->getScreenWidth(),
-                    ],
-                    'ipAddress' => $this->getIpAddress(),
-                    'locale' => $this->getLocale(),
-                    'timezoneOffsetUtcMinutes' => $this->getTimezoneOffsetUtcMinutes(),
-                    'userAgent' => $this->getUserAgent(),
-                ],
+                'device' => $deviceData,
                 'contactDetails' => [
                     'emailAddress' => $this->getEmail(),
                 ],
