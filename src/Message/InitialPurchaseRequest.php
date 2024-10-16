@@ -37,7 +37,7 @@ class InitialPurchaseRequest extends AuthorizeRequest
                 'javaScriptEnabled' => true,
                 'screenHeight' => $this->getScreenHeight(),
                 'screenWidth' => $this->getScreenWidth(),
-            ], fn ($value) => true),
+            ]),
             'ipAddress' => $this->getIpAddress(),
             'locale' => $this->getLocale(),
             'timezoneOffsetUtcMinutes' => $this->getTimezoneOffsetUtcMinutes(),
