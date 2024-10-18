@@ -6,6 +6,7 @@ use Ampeco\OmnipayWlValina\CommonParameters;
 use Ampeco\OmnipayWlValina\Gateway;
 use DateTime;
 use DateTimeZone;
+use Illuminate\Support\Facades\Log;
 use Omnipay\Common\Message\AbstractRequest as OmniPayAbstractRequest;
 
 abstract class AbstractRequest extends OmniPayAbstractRequest
@@ -69,14 +70,31 @@ abstract class AbstractRequest extends OmniPayAbstractRequest
         // Send request
         $response = $this->httpClient->request($requestMethod, $this->getBaseUrl() . $this->getMerchantId() . $url, $headers, $body);
 
-        // Decode response body, empty for DELETE
-        $responseData = $requestMethod === 'DELETE' ? [] : json_decode($response->getBody()->getContents(), true, flags: JSON_THROW_ON_ERROR);
+        if ($requestMethod === 'DELETE') {
+            $responseData = [];
+        } else {
+            $responseContent = $response->getBody()->getContents();
+            try {
+                $responseData = json_decode($responseContent, true, flags: JSON_THROW_ON_ERROR);
+            } catch (\JsonException $e) {
+                Log::info('[Worldline] Response', [
+                    'json_error' => $e->getMessage(),
+                    'response' => strlen($responseContent) > 5_000
+                        ? substr($responseContent, 0, 5_000) . '...'
+                        : $responseContent,
+                ]);
+                throw $e;
+            }
+        }
 
         return $this->createResponse($responseData, $response->getStatusCode());
     }
 
-    /** Used for logging only to get the method and endpoint of the request */
-    public function getEndpointLogData(){
+    /**
+     * Used for logging only to get the method and endpoint of the request
+     */
+    public function getEndpointLogData()
+    {
         return [
             'method' => $this->getRequestMethod(),
             'url' => $this->getBaseUrl() . $this->getMerchantId() . $this->getEndpoint(),
