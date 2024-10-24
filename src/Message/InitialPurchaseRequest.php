@@ -58,6 +58,8 @@ class InitialPurchaseRequest extends AuthorizeRequest
                     'city' => $this->getCity(),
                     'countryCode' => $this->getCountryCode(),
                     'street' => $this->getStreet(),
+                    'zip' => $this->getZip(),
+                    'additionalInfo' => $this->getAdditionalInfo(),
                 ],
             ],
         ];

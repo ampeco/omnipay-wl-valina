@@ -183,4 +183,24 @@ trait CommonParameters
     {
         return $this->getParameter('timezoneOffsetUtcMinutes');
     }
+
+    public function setZip($value): void
+    {
+        $this->setParameter('zip', $value);
+    }
+
+    public function getZip()
+    {
+        return $this->getParameter('zip');
+    }
+
+    public function setAdditionalInfo($value): void
+    {
+        $this->setParameter('additionalInfo', $value);
+    }
+
+    public function getAdditionalInfo()
+    {
+        return $this->getParameter('additionalInfo');
+    }
 }
