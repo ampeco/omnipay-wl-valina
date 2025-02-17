@@ -18,7 +18,7 @@ class AuthorizeRequest extends AbstractRequest
     {
         return [
             'cardPaymentMethodSpecificInput' => [
-                'authorizationMode' => 'FINAL_AUTHORIZATION',
+                'authorizationMode' => 'PRE_AUTHORIZATION',
                 'transactionChannel' => 'ECOMMERCE',
                 'returnUrl' => $this->getReturnUrl(),
                 'token' => $this->getToken(),

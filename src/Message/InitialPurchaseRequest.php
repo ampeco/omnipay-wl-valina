@@ -18,6 +18,7 @@ class InitialPurchaseRequest extends AuthorizeRequest
     {
         $data = parent::getData();
 
+        $data['cardPaymentMethodSpecificInput']['authorizationMode'] = 'FINAL_AUTHORIZATION';
         $data['cardPaymentMethodSpecificInput']['threeDSecure']['skipAuthentication'] = false;
         $data['cardPaymentMethodSpecificInput']['threeDSecure']['challengeIndicator'] = 'challenge-required';
         $data['cardPaymentMethodSpecificInput']['unscheduledCardOnFileRequestor'] = 'cardholderInitiated';

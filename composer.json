@@ -5,7 +5,10 @@
     "type": "library",
     "license": "MIT",
     "autoload": {
-        "psr-4": { "Ampeco\\OmnipayWlValina\\": "src/" }
+        "psr-4": {
+            "Ampeco\\OmnipayWlValina\\": "src/",
+            "Ampeco\\OmnipayWlValina\\Tests\\": "tests/"
+        }
     },
     "authors": [
         {
