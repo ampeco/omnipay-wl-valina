@@ -27,6 +27,9 @@ class Response extends AbstractResponse
     const STATUS_REFUND_REQUESTED = 'REFUND_REQUESTED';
     const STATUS_REFUNDED = 'REFUNDED';
 
+    const PENDING_STATUS_CODES = [46, 50, 51, 52, 55];
+    const PENDING_ERROR_CODES = [20001111, 20001006, 20001101];
+
     public function __construct(RequestInterface $request, $data, protected int $code)
     {
         parent::__construct($request, $data);
@@ -63,6 +66,17 @@ class Response extends AbstractResponse
         }
 
         return '';
+    }
+
+    public function isPending(): bool
+    {
+        return in_array($this->getStatusCode(), self::PENDING_STATUS_CODES)
+            && in_array($this->getCode(), self::PENDING_ERROR_CODES);
+    }
+
+    public function getStatusCode()
+    {
+        return $this->data['paymentResult']['payment']['statusOutput']['statusCode'];
     }
 
     public function getCode()
