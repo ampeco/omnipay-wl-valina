@@ -76,7 +76,7 @@ class Response extends AbstractResponse
 
     public function getStatusCode()
     {
-        return $this->data['paymentResult']['payment']['statusOutput']['statusCode'];
+        return $this->data['paymentResult']['payment']['statusOutput']['statusCode'] ?? [];
     }
 
     public function getCode()
