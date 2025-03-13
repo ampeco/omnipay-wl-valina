@@ -22,6 +22,7 @@ class GatewayTest extends TestCase
             'token' => 'token',
             'locale' => 'en_GB',
             'returnUrl' => 'http://test.com/return',
+            'useFinalAuthInsteadOfSale' => true,
         ]);
 
         $this->assertTrue($request instanceof AuthorizeRequest);
