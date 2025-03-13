@@ -16,7 +16,7 @@ class CreatePaymentResponse extends Response
 
     public function isPending(): bool
     {
-        return parent::isPending() || in_array($this->getStatusCategory(), [
+        return in_array($this->getStatusCategory(), [
             self::STATUS_CATEGORY_CREATED,
             self::STATUS_CATEGORY_PENDING_PAYMENT,
             self::STATUS_CATEGORY_PENDING_CONNECT_OR_3RD_PARTY,

@@ -68,16 +68,16 @@ class Response extends AbstractResponse
         return '';
     }
 
-    public function isPending(): bool
-    {
-        return in_array($this->getStatusCode(), self::PENDING_STATUS_CODES)
-            && in_array($this->getCode(), self::PENDING_ERROR_CODES);
-    }
-
-    public function getStatusCode()
-    {
-        return $this->data['paymentResult']['payment']['statusOutput']['statusCode'] ?? [];
-    }
+//    public function isPending(): bool
+//    {
+//        return in_array($this->getStatusCode(), self::PENDING_STATUS_CODES)
+//            && in_array($this->getCode(), self::PENDING_ERROR_CODES);
+//    }
+//
+//    public function getStatusCode()
+//    {
+//        return $this->data['paymentResult']['payment']['statusOutput']['statusCode'] ?? [];
+//    }
 
     public function getCode()
     {
