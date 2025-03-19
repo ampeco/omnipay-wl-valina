@@ -214,6 +214,6 @@ trait CommonParameters
 
     public function getUseFinalAuthInsteadOfSale(): bool
     {
-        return $this->getParameter('useFinalAuthInsteadOfSale');
+        return $this->getParameter('useFinalAuthInsteadOfSale') ?? false;
     }
 }
