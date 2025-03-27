@@ -30,19 +30,19 @@ class AuthorizeRequest extends AbstractRequest
                 ],
             ],
             'order' => [
+                'additionalInput' => [
+                    'airlineData' => [
+                        "code" =>"1",
+                        "name" => "name"
+                    ],
+                    'typeInformation' => [
+                        'purchaseType' => 'physical',
+                        'transactionType' => 'purchase',
+                    ],
+                ],
                 'amountOfMoney' => [
                     'amount' => $this->getAmountInteger(),
                     'currencyCode' => $this->getCurrency(),
-                    'additionalInput' => [
-                        'airlineData' => [
-                            "code" =>"1",
-                            "name" => "name"
-                        ],
-                        'typeInformation' => [
-                            'purchaseType' => 'physical',
-                            'transactionType' => 'purchase',
-                        ],
-                    ],
                 ],
                 ...$this->getCustomerData(),
             ],
