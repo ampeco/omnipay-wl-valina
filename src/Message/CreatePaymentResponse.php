@@ -2,7 +2,9 @@
 
 namespace Ampeco\OmnipayWlValina\Message;
 
-class CreatePaymentResponse extends Response
+use Omnipay\Common\Message\RedirectResponseInterface;
+
+class CreatePaymentResponse extends Response implements RedirectResponseInterface
 {
     public function getStatusCategory(): string
     {
