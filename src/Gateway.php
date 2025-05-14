@@ -10,13 +10,14 @@ use Ampeco\OmnipayWlValina\Message\GetPaymentRequest;
 use Ampeco\OmnipayWlValina\Message\InitialPurchaseRequest;
 use Ampeco\OmnipayWlValina\Message\NotificationRequest;
 use Ampeco\OmnipayWlValina\Message\PurchaseRequest;
+use Ampeco\OmnipayWlValina\Message\RefundRequest;
+use Ampeco\OmnipayWlValina\Message\RefundResponse;
 use Ampeco\OmnipayWlValina\Message\VoidRequest;
 use Omnipay\Common\AbstractGateway;
 
 /**
  * @method \Omnipay\Common\Message\RequestInterface completeAuthorize(array $options = array())
  * @method \Omnipay\Common\Message\RequestInterface completePurchase(array $options = array())
- * @method \Omnipay\Common\Message\RequestInterface refund(array $options = array())
  * @method \Omnipay\Common\Message\RequestInterface fetchTransaction(array $options = [])
  * @method \Omnipay\Common\Message\RequestInterface updateCard(array $options = array())
  */
@@ -83,5 +84,10 @@ class Gateway extends AbstractGateway
         // https://docs.direct.worldline-solutions.com/en/integration/basic-integration-methods/hosted-tokenization-page#sendcreatepaymentrequest
         // Nobody says it will always be 32 characters long
         return strlen($reference) === 32;
+    }
+
+    public function refund(array $parameters)
+    {
+        return $this->createRequest(RefundRequest::class, $parameters);
     }
 }
