@@ -26,9 +26,9 @@ class RefundNotification implements NotificationInterface
         }
 
         return match($this->data['refund']['status']) {
-            self::REFUNDED => self::STATUS_COMPLETED,
-            self::REJECTED => self::STATUS_FAILED,
-            self::REFUND_REQUESTED => self::STATUS_PENDING,
+            self::REFUNDED => NotificationInterface::STATUS_COMPLETED,
+            self::REJECTED => NotificationInterface::STATUS_FAILED,
+            self::REFUND_REQUESTED => NotificationInterface::STATUS_PENDING,
             default => null,
         };
     }
