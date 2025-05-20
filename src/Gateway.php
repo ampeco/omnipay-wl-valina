@@ -11,8 +11,8 @@ use Ampeco\OmnipayWlValina\Message\InitialPurchaseRequest;
 use Ampeco\OmnipayWlValina\Message\NotificationRequest;
 use Ampeco\OmnipayWlValina\Message\PurchaseRequest;
 use Ampeco\OmnipayWlValina\Message\RefundRequest;
-use Ampeco\OmnipayWlValina\Message\RefundResponse;
 use Ampeco\OmnipayWlValina\Message\VoidRequest;
+use Ampeco\OmnipayWlValina\Message\RefundNotification;
 use Omnipay\Common\AbstractGateway;
 
 /**
@@ -24,6 +24,12 @@ use Omnipay\Common\AbstractGateway;
 class Gateway extends AbstractGateway
 {
     use CommonParameters;
+
+    public const WEBHOOK_NOTIFICATION_REFUND_TYPES = [
+        'payment.refunded',
+        'refund.rejected',
+        'refund.refund_requested',
+    ];
 
     /**
      * @inheritDoc
@@ -40,7 +46,13 @@ class Gateway extends AbstractGateway
 
     public function acceptNotification(array $requestData)
     {
-        return $this->createRequest(NotificationRequest::class, $requestData);
+        if (isset($requestData['type']) && in_array($requestData['type'], self::WEBHOOK_NOTIFICATION_REFUND_TYPES)) {
+            return new RefundNotification($requestData);
+        }
+
+        if (isset($requestData['hostedTokenizationId'])) {
+            return $this->createRequest(NotificationRequest::class, $requestData);
+        }
     }
 
     public function deleteCard(array $parameters = [])
