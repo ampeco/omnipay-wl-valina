@@ -79,6 +79,7 @@ abstract class AbstractRequest extends OmniPayAbstractRequest
             } catch (\JsonException $e) {
                 Log::info('[Worldline] Response', [
                     'json_error' => $e->getMessage(),
+                    'raw_response' => $responseContent,
                     'response' => strlen($responseContent) > 5_000
                         ? substr($responseContent, 0, 5_000) . '...'
                         : $responseContent,
