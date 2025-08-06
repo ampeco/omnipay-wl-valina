@@ -11,7 +11,7 @@ class NotificationResponse extends Response
         return parent::isSuccessful()
             && array_key_exists('token', $this->data)
             && array_key_exists('id', $this->data['token'])
-            && $this->data['tokenStatus'] === 'CREATED';
+            && $this->data['tokenStatus'] === 'CREATED' || $this->data['tokenStatus'] === 'UNCHANGED';
     }
 
     public function getToken()
@@ -26,6 +26,6 @@ class NotificationResponse extends Response
 
     public function isForTokenization(): bool
     {
-        return $this->data['tokenStatus'] === 'CREATED';
+        return $this->data['tokenStatus'] === 'CREATED' || $this->data['tokenStatus'] === 'UNCHANGED';
     }
 }

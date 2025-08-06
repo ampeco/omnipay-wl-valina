@@ -14,6 +14,8 @@ class PurchaseRequest extends AuthorizeRequest
             $data['cardPaymentMethodSpecificInput']['authorizationMode'] = 'SALE';
         }
 
+        //TODO: remove next line after finishing testing
+        $data['order']['amountOfMoney']['amount'] = 1602;
         return $data;
     }
 }

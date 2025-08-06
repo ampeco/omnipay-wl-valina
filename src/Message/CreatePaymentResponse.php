@@ -6,6 +6,8 @@ use Omnipay\Common\Message\RedirectResponseInterface;
 
 class CreatePaymentResponse extends Response implements RedirectResponseInterface
 {
+    public const ERROR_CODE_SOFT_DECLINED = '40001139';
+
     public function getStatusCategory(): string
     {
         return $this->data['payment']['statusOutput']['statusCategory'] ?? '';
@@ -22,12 +24,12 @@ class CreatePaymentResponse extends Response implements RedirectResponseInterfac
             self::STATUS_CATEGORY_CREATED,
             self::STATUS_CATEGORY_PENDING_PAYMENT,
             self::STATUS_CATEGORY_PENDING_CONNECT_OR_3RD_PARTY,
-        ]);
+        ]) || $this->isSoftDeclined();
     }
 
     public function isRedirect(): bool
     {
-        return $this->getStatus() == self::STATUS_REDIRECTED && $this->getRedirectUrl();
+        return ($this->getStatus() == self::STATUS_REDIRECTED && $this->getRedirectUrl()) || $this->isSoftDeclined();
     }
 
     public function isSuccessful(): bool
@@ -56,5 +58,10 @@ class CreatePaymentResponse extends Response implements RedirectResponseInterfac
     public function getCode()
     {
         return @$this->data['errors'][0]['errorCode'] ?? parent::getCode();
+    }
+
+    public function isSoftDeclined(): bool
+    {
+        return $this->getCode() === self::ERROR_CODE_SOFT_DECLINED;
     }
 }

@@ -45,6 +45,7 @@ class CreateCardRequest extends AbstractRequest
             'createCard' => true,
             'variant' => $this->getTemplate(),
             'locale' => $this->getLocale(),
+            'tokens' => $this->getToken(),
         ];
     }
 
