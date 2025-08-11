@@ -216,4 +216,15 @@ trait CommonParameters
     {
         return $this->getParameter('useFinalAuthInsteadOfSale') ?? false;
     }
+
+    public function setToken($value): void
+    {
+        $this->setParameter('token', $value);
+    }
+
+    public function getToken()
+    {
+        return $this->getParameter('token');
+    }
+
 }
