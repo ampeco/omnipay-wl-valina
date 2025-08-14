@@ -31,9 +31,7 @@ class AuthorizeRequest extends AbstractRequest
             ],
             'order' => [
                 'amountOfMoney' => [
-                    //TODO: remove next line after finishing testing
-                    'amount' => 1602,
-//                    'amount' => $this->getAmountInteger(),
+                    'amount' => $this->getAmountInteger(),
                     'currencyCode' => $this->getCurrency(),
                 ],
                 ...$this->getCustomerData(),
