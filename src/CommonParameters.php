@@ -227,4 +227,14 @@ trait CommonParameters
         return $this->getParameter('token');
     }
 
+    public function setDescriptor($value): void
+    {
+        $this->setParameter('descriptor', $value);
+    }
+
+    public function getDescriptor()
+    {
+        return $this->getParameter('descriptor');
+    }
+
 }

@@ -16,7 +16,7 @@ class AuthorizeRequest extends AbstractRequest
 
     public function getData(): array
     {
-        return [
+        $data = [
             'cardPaymentMethodSpecificInput' => [
                 'authorizationMode' => $this->getUseFinalAuthInsteadOfSale() ? 'PRE_AUTHORIZATION' : 'FINAL_AUTHORIZATION',
                 'transactionChannel' => 'ECOMMERCE',
@@ -37,6 +37,16 @@ class AuthorizeRequest extends AbstractRequest
                 ...$this->getCustomerData(),
             ],
         ];
+
+        // Add descriptor if provided (for custom fee descriptions)
+        $descriptor = $this->getDescriptor();
+        if ($descriptor !== null && $descriptor !== '') {
+            $data['order']['references'] = [
+                'descriptor' => $descriptor,
+            ];
+        }
+
+        return $data;
     }
 
     public function getCustomerData(): array
