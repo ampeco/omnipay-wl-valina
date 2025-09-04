@@ -85,6 +85,11 @@ class Response extends AbstractResponse
 
         return @$errors[0]['errorCode'];
     }
+    
+    public function getHttpStatusCode(): int
+    {
+        return $this->code;
+    }
 
     protected function getErrorMessage($errorCode)
     {
