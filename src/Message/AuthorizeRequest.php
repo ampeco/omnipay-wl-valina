@@ -38,7 +38,16 @@ class AuthorizeRequest extends AbstractRequest
             ],
         ];
 
-        // Add descriptor if provided (for custom fee descriptions)
+        $threeDSReturnUrl = $this->getThreeDSReturnUrl();
+        if ($threeDSReturnUrl) {
+            $data['cardPaymentMethodSpecificInput']['threeDSecure']['redirectionData']['returnUrl'] = $threeDSReturnUrl;
+        }
+
+        $challengeCanvasSize = $this->getThreeDSChallengeCanvasSize();
+        if ($challengeCanvasSize) {
+            $data['cardPaymentMethodSpecificInput']['threeDSecure']['challengeCanvasSize'] = $challengeCanvasSize;
+        }
+
         $descriptor = $this->getDescriptor();
         if ($descriptor !== null && $descriptor !== '') {
             $data['order']['references'] = [

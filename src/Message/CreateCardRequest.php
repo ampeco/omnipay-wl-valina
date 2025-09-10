@@ -41,12 +41,31 @@ class CreateCardRequest extends AbstractRequest
      */
     public function getData()
     {
-        return [
+        $data = [
             'createCard' => true,
             'variant' => $this->getTemplate(),
             'locale' => $this->getLocale(),
             'tokens' => $this->getToken(),
         ];
+
+        $challengeCanvasSize = $this->getThreeDSChallengeCanvasSize();
+        $threeDSReturnUrl = $this->getThreeDSReturnUrl();
+
+        if ($challengeCanvasSize || $threeDSReturnUrl) {
+            $data['cardPaymentMethodSpecificInput'] = [
+                'threeDSecure' => [],
+            ];
+
+            if ($challengeCanvasSize) {
+                $data['cardPaymentMethodSpecificInput']['threeDSecure']['challengeCanvasSize'] = $challengeCanvasSize;
+            }
+
+            if ($threeDSReturnUrl) {
+                $data['cardPaymentMethodSpecificInput']['threeDSecure']['redirectionData']['returnUrl'] = $threeDSReturnUrl;
+            }
+        }
+
+        return $data;
     }
 
     protected function createResponse(array $data, int $statusCode): Response

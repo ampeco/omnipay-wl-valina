@@ -237,4 +237,24 @@ trait CommonParameters
         return $this->getParameter('descriptor');
     }
 
+    public function setThreeDSReturnUrl(?string $value): void
+    {
+        $this->setParameter('threeDSReturnUrl', $value);
+    }
+
+    public function getThreeDSReturnUrl(): ?string
+    {
+        return $this->getParameter('threeDSReturnUrl');
+    }
+
+    public function setThreeDSChallengeCanvasSize(?string $value): void
+    {
+        $this->setParameter('threeDSChallengeCanvasSize', $value);
+    }
+
+    public function getThreeDSChallengeCanvasSize(): ?string
+    {
+        return $this->getParameter('threeDSChallengeCanvasSize');
+    }
+
 }

@@ -25,6 +25,16 @@ class InitialPurchaseRequest extends AuthorizeRequest
         $data['cardPaymentMethodSpecificInput']['unscheduledCardOnFileSequenceIndicator'] = 'first';
         $data['hostedTokenizationId'] = $this->getHostedTokenizationId();
 
+        $threeDSReturnUrl = $this->getThreeDSReturnUrl();
+        if ($threeDSReturnUrl) {
+            $data['cardPaymentMethodSpecificInput']['threeDSecure']['redirectionData']['returnUrl'] = $threeDSReturnUrl;
+        }
+
+        $challengeCanvasSize = $this->getThreeDSChallengeCanvasSize();
+        if ($challengeCanvasSize) {
+            $data['cardPaymentMethodSpecificInput']['threeDSecure']['challengeCanvasSize'] = $challengeCanvasSize;
+        }
+
         return $data;
     }
 
