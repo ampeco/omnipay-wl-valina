@@ -6,12 +6,11 @@ use Ampeco\OmnipayWlValina\Gateway;
 use Ampeco\OmnipayWlValina\Message\AuthorizeRequest;
 use Omnipay\Omnipay;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\Test;
 
 class GatewayTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function it_uses_pre_authorize_mode_when_session_authorization()
     {
         $gateway = Omnipay::create('\\' . Gateway::class);
@@ -29,9 +28,7 @@ class GatewayTest extends TestCase
         $this->assertEquals('PRE_AUTHORIZATION', $request->getData()['cardPaymentMethodSpecificInput']['authorizationMode']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_continues_to_use_final_authorization_mode_when_initial_purchase()
     {
         $gateway = Omnipay::create('\\' . Gateway::class);

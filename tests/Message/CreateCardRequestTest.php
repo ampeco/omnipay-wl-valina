@@ -6,6 +6,7 @@ use Ampeco\OmnipayWlValina\Message\CreateCardRequest;
 use Omnipay\Common\Http\ClientInterface;
 use Symfony\Component\HttpFoundation\Request as HttpRequest;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\Test;
 use Mockery;
 
 class CreateCardRequestTest extends TestCase
@@ -27,7 +28,8 @@ class CreateCardRequestTest extends TestCase
         ]);
     }
 
-    public function testGetDataWithEnhanced3DSParameters(): void
+    #[Test]
+    public function it_gets_data_with_enhanced_3ds_parameters(): void
     {
         $this->request->setThreeDSReturnUrl('https://example.com/3ds-return');
         $this->request->setThreeDSChallengeCanvasSize('full-screen');
@@ -43,7 +45,8 @@ class CreateCardRequestTest extends TestCase
         $this->assertEquals('https://example.com/3ds-return', $data['cardPaymentMethodSpecificInput']['threeDSecure']['redirectionData']['returnUrl']);
     }
 
-    public function testGetDataWithOnlyThreeDSReturnUrl(): void
+    #[Test]
+    public function it_gets_data_with_only_three_ds_return_url(): void
     {
         $this->request->setThreeDSReturnUrl('https://example.com/3ds-return');
         
@@ -57,7 +60,8 @@ class CreateCardRequestTest extends TestCase
         $this->assertArrayNotHasKey('challengeCanvasSize', $data['cardPaymentMethodSpecificInput']['threeDSecure']);
     }
 
-    public function testGetDataWithOnlyChallengeCanvasSize(): void
+    #[Test]
+    public function it_gets_data_with_only_challenge_canvas_size(): void
     {
         $this->request->setThreeDSChallengeCanvasSize('full-screen');
         
@@ -70,7 +74,8 @@ class CreateCardRequestTest extends TestCase
         $this->assertArrayNotHasKey('redirectionData', $data['cardPaymentMethodSpecificInput']['threeDSecure']);
     }
 
-    public function testGetDataWithoutEnhanced3DSParameters(): void
+    #[Test]
+    public function it_gets_data_without_enhanced_3ds_parameters(): void
     {
         $data = $this->request->getData();
         

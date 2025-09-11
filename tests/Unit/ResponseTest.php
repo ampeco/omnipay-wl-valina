@@ -8,13 +8,13 @@ use Ampeco\OmnipayWlValina\Message\Response;
 use Illuminate\Http\Request;
 use Omnipay\Common\Http\Client;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class ResponseTest extends TestCase
 {
-    /**
-     * @dataProvider responseClasses
-     * @test
-     */
+    #[Test]
+    #[DataProvider('responseClasses')]
     public function it_tests_response_is_pending_when_both_conditions_are_matched($responseClass)
     {
         $response = new $responseClass(request: (new PurchaseRequest(new Client(), new Request)), data: [
@@ -41,10 +41,8 @@ class ResponseTest extends TestCase
         $this->assertTrue($response->isPending());
     }
 
-    /**
-     * @dataProvider responseClasses
-     * @test
-     */
+    #[Test]
+    #[DataProvider('responseClasses')]
     public function it_tests_response_not_pending_when_error_code_matches_but_status_code_does_not($responseClass)
     {
         $response = new $responseClass(request: (new PurchaseRequest(new Client(), new Request)), data: [
@@ -71,10 +69,8 @@ class ResponseTest extends TestCase
         $this->assertNotTrue($response->isPending());
     }
 
-    /**
-     * @dataProvider responseClasses
-     * @test
-     */
+    #[Test]
+    #[DataProvider('responseClasses')]
     public function it_tests_response_not_pending_when_status_code_matches_but_error_code_does_not($responseClass)
     {
         $response = new $responseClass(request: (new PurchaseRequest(new Client(), new Request)), data: [

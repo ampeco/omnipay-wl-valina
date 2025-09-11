@@ -6,12 +6,14 @@ use Ampeco\OmnipayWlValina\Message\NotificationResponse;
 use Omnipay\Common\Message\NotificationInterface;
 use Omnipay\Common\Message\RequestInterface;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\Test;
 use Mockery;
 use Mockery\MockInterface;
 
 class NotificationResponseTest extends TestCase
 {
-    public function testIsSuccessfulWithMissingTokenStatus(): void
+    #[Test]
+    public function it_is_successful_with_missing_token_status(): void
     {
         /** @var RequestInterface&MockInterface $request */
         $request = Mockery::mock(RequestInterface::class);
@@ -33,7 +35,8 @@ class NotificationResponseTest extends TestCase
         $this->assertFalse($response->isSuccessful());
     }
 
-    public function testIsForTokenizationWithMissingTokenStatus(): void
+    #[Test]
+    public function it_is_for_tokenization_with_missing_token_status(): void
     {
         /** @var RequestInterface&MockInterface $request */
         $request = Mockery::mock(RequestInterface::class);
@@ -55,7 +58,8 @@ class NotificationResponseTest extends TestCase
         $this->assertFalse($response->isForTokenization());
     }
 
-    public function testIsSuccessfulWithValidTokenStatusCreated(): void
+    #[Test]
+    public function it_is_successful_with_valid_token_status_created(): void
     {
         /** @var RequestInterface&MockInterface $request */
         $request = Mockery::mock(RequestInterface::class);
@@ -75,7 +79,8 @@ class NotificationResponseTest extends TestCase
         $this->assertEquals(NotificationInterface::STATUS_COMPLETED, $response->getTransactionStatus());
     }
 
-    public function testIsSuccessfulWithValidTokenStatusUnchanged(): void
+    #[Test]
+    public function it_is_successful_with_valid_token_status_unchanged(): void
     {
         /** @var RequestInterface&MockInterface $request */
         $request = Mockery::mock(RequestInterface::class);
@@ -95,7 +100,8 @@ class NotificationResponseTest extends TestCase
         $this->assertEquals(NotificationInterface::STATUS_COMPLETED, $response->getTransactionStatus());
     }
 
-    public function testIsSuccessfulWithInvalidTokenStatus(): void
+    #[Test]
+    public function it_is_successful_with_invalid_token_status(): void
     {
         /** @var RequestInterface&MockInterface $request */
         $request = Mockery::mock(RequestInterface::class);
@@ -114,7 +120,8 @@ class NotificationResponseTest extends TestCase
         $this->assertEquals(NotificationInterface::STATUS_FAILED, $response->getTransactionStatus());
     }
 
-    public function testIsSuccessfulWithMissingToken(): void
+    #[Test]
+    public function it_is_successful_with_missing_token(): void
     {
         /** @var RequestInterface&MockInterface $request */
         $request = Mockery::mock(RequestInterface::class);

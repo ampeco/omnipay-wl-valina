@@ -6,6 +6,7 @@ use Ampeco\OmnipayWlValina\Message\AuthorizeRequest;
 use Omnipay\Common\Http\ClientInterface;
 use Symfony\Component\HttpFoundation\Request as HttpRequest;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\Test;
 use Mockery;
 
 class AuthorizeRequestTest extends TestCase
@@ -29,7 +30,8 @@ class AuthorizeRequestTest extends TestCase
         ]);
     }
 
-    public function testGetDataWithoutDescriptor(): void
+    #[Test]
+    public function it_gets_data_without_descriptor(): void
     {
         $data = $this->request->getData();
 
@@ -38,7 +40,8 @@ class AuthorizeRequestTest extends TestCase
         $this->assertArrayNotHasKey('references', $data['order']);
     }
 
-    public function testGetDataWithDescriptor(): void
+    #[Test]
+    public function it_gets_data_with_descriptor(): void
     {
         $this->request->setDescriptor('Custom fee for parking overstay');
         $data = $this->request->getData();
@@ -49,7 +52,8 @@ class AuthorizeRequestTest extends TestCase
         $this->assertEquals('Custom fee for parking overstay', $data['order']['references']['descriptor']);
     }
 
-    public function testGetDataWithEmptyDescriptor(): void
+    #[Test]
+    public function it_gets_data_with_empty_descriptor(): void
     {
         $this->request->setDescriptor('');
         $data = $this->request->getData();
@@ -58,7 +62,8 @@ class AuthorizeRequestTest extends TestCase
         $this->assertArrayNotHasKey('references', $data['order']);
     }
 
-    public function testGetDataWithNullDescriptor(): void
+    #[Test]
+    public function it_gets_data_with_null_descriptor(): void
     {
         $this->request->setDescriptor(null);
         $data = $this->request->getData();
@@ -67,7 +72,8 @@ class AuthorizeRequestTest extends TestCase
         $this->assertArrayNotHasKey('references', $data['order']);
     }
 
-    public function testDescriptorGetterSetter(): void
+    #[Test]
+    public function it_tests_descriptor_getter_setter(): void
     {
         $this->assertNull($this->request->getDescriptor());
 
@@ -78,7 +84,8 @@ class AuthorizeRequestTest extends TestCase
         $this->assertNull($this->request->getDescriptor());
     }
 
-    public function testGetDataWithEnhanced3DSParameters(): void
+    #[Test]
+    public function it_gets_data_with_enhanced_3ds_parameters(): void
     {
         $this->request->setThreeDSReturnUrl('https://example.com/3ds-return');
         $this->request->setThreeDSChallengeCanvasSize('full-screen');
@@ -94,7 +101,8 @@ class AuthorizeRequestTest extends TestCase
         $this->assertEquals('full-screen', $data['cardPaymentMethodSpecificInput']['threeDSecure']['challengeCanvasSize']);
     }
 
-    public function testGetDataWithOnlyThreeDSReturnUrl(): void
+    #[Test]
+    public function it_gets_data_with_only_three_ds_return_url(): void
     {
         $this->request->setThreeDSReturnUrl('https://example.com/3ds-return');
         
@@ -108,7 +116,8 @@ class AuthorizeRequestTest extends TestCase
         $this->assertArrayNotHasKey('challengeCanvasSize', $data['cardPaymentMethodSpecificInput']['threeDSecure']);
     }
 
-    public function testGetDataWithOnlyChallengeCanvasSize(): void
+    #[Test]
+    public function it_gets_data_with_only_challenge_canvas_size(): void
     {
         $this->request->setThreeDSChallengeCanvasSize('full-screen');
         
@@ -121,7 +130,8 @@ class AuthorizeRequestTest extends TestCase
         $this->assertArrayNotHasKey('redirectionData', $data['cardPaymentMethodSpecificInput']['threeDSecure']);
     }
 
-    public function testGetDataWithoutEnhanced3DSParameters(): void
+    #[Test]
+    public function it_gets_data_without_enhanced_3ds_parameters(): void
     {
         $data = $this->request->getData();
         
@@ -131,7 +141,8 @@ class AuthorizeRequestTest extends TestCase
         $this->assertArrayNotHasKey('challengeCanvasSize', $data['cardPaymentMethodSpecificInput']['threeDSecure']);
     }
 
-    public function testThreeDSParameterGettersSetters(): void
+    #[Test]
+    public function it_tests_three_ds_parameter_getters_setters(): void
     {
         $this->assertNull($this->request->getThreeDSReturnUrl());
         $this->assertNull($this->request->getThreeDSChallengeCanvasSize());
