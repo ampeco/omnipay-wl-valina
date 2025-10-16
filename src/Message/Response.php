@@ -28,6 +28,7 @@ class Response extends AbstractResponse
     const STATUS_REFUNDED = 'REFUNDED';
 
     const PENDING_STATUS_CODES = [46, 50, 51, 52, 55];
+    const AUTHORIZED_AND_CANCELLED_STATUS_CODE = 6;
     const PENDING_ERROR_CODES = [20001111, 20001006, 20001101];
 
     public function __construct(RequestInterface $request, $data, protected int $code)
@@ -85,7 +86,7 @@ class Response extends AbstractResponse
 
         return @$errors[0]['errorCode'];
     }
-    
+
     public function getHttpStatusCode(): int
     {
         return $this->code;
