@@ -14,6 +14,11 @@ class GetPaymentResponse extends Response
         return $this->data['statusOutput']['statusCategory'] ?? '';
     }
 
+    public function getStatusCode(): string
+    {
+        return $this->data['statusOutput']['statusCode'] ?? '';
+    }
+
     public function isPending(): bool
     {
         return in_array($this->getStatusCategory(), [
