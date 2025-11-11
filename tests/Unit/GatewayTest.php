@@ -4,6 +4,7 @@ namespace Ampeco\OmnipayWlValina\Unit;
 
 use Ampeco\OmnipayWlValina\Gateway;
 use Ampeco\OmnipayWlValina\Message\AuthorizeRequest;
+use Ampeco\OmnipayWlValina\Message\GetPaymentDetailsRequest;
 use Omnipay\Omnipay;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Attributes\Test;
@@ -44,5 +45,17 @@ class GatewayTest extends TestCase
 
         $this->assertTrue($request instanceof AuthorizeRequest);
         $this->assertEquals('FINAL_AUTHORIZATION', $request->getData()['cardPaymentMethodSpecificInput']['authorizationMode']);
+    }
+
+    #[Test]
+    public function it_creates_get_payment_details_request()
+    {
+        $gateway = Omnipay::create('\\' . Gateway::class);
+
+        $request = $gateway->getPaymentDetails([
+            'payment_id' => 'test-payment-123',
+        ]);
+
+        $this->assertInstanceOf(GetPaymentDetailsRequest::class, $request);
     }
 }

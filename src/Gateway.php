@@ -6,6 +6,7 @@ use Ampeco\OmnipayWlValina\Message\AuthorizeRequest;
 use Ampeco\OmnipayWlValina\Message\CaptureRequest;
 use Ampeco\OmnipayWlValina\Message\CreateCardRequest;
 use Ampeco\OmnipayWlValina\Message\DeleteCardRequest;
+use Ampeco\OmnipayWlValina\Message\GetPaymentDetailsRequest;
 use Ampeco\OmnipayWlValina\Message\GetPaymentRequest;
 use Ampeco\OmnipayWlValina\Message\InitialPurchaseRequest;
 use Ampeco\OmnipayWlValina\Message\NotificationRequest;
@@ -88,6 +89,11 @@ class Gateway extends AbstractGateway
     public function getPayment(array $parameters)
     {
         return $this->createRequest(GetPaymentRequest::class, $parameters);
+    }
+
+    public function getPaymentDetails(array $parameters)
+    {
+        return $this->createRequest(GetPaymentDetailsRequest::class, $parameters);
     }
 
     public function isHostedTokenizationReference(string $reference): bool
