@@ -7,6 +7,7 @@ use Ampeco\OmnipayWlValina\Gateway;
 use DateTime;
 use DateTimeZone;
 use Illuminate\Support\Facades\Log;
+use JsonException;
 use Omnipay\Common\Message\AbstractRequest as OmniPayAbstractRequest;
 
 abstract class AbstractRequest extends OmniPayAbstractRequest
@@ -75,59 +76,59 @@ abstract class AbstractRequest extends OmniPayAbstractRequest
         } else {
             $responseContent = $response->getBody()->getContents();
             $contentType = $response->getHeader('Content-Type')[0] ?? '';
-            
-            // Check if response is JSON based on Content-Type header
-            $isJsonResponse = str_contains(strtolower($contentType), 'application/json') 
-                || str_contains(strtolower($contentType), 'text/json');
-            
-            if (!$isJsonResponse && !empty($responseContent)) {
-                // Log non-JSON response for debugging
-                Log::warning('[Worldline] Non-JSON response received', [
-                    'content_type' => $contentType,
-                    'status_code' => $response->getStatusCode(),
-                    'response_preview' => strlen($responseContent) > 1000 
-                        ? substr($responseContent, 0, 1000) . '...' 
-                        : $responseContent,
-                ]);
-                
-                // Create error response data structure for non-JSON responses
-                $responseData = [
-                    'errors' => [
-                        [
-                            'code' => 'GATEWAY_ERROR',
-                            'message' => 'Invalid response from payment gateway',
-                            'httpStatusCode' => $response->getStatusCode(),
-                        ]
-                    ],
-                ];
-            } else {
-                try {
-                    $responseData = json_decode($responseContent, true, flags: JSON_THROW_ON_ERROR);
-                } catch (\JsonException $e) {
-                    Log::warning('[Worldline] JSON parsing error', [
-                        'json_error' => $e->getMessage(),
-                        'content_type' => $contentType,
-                        'status_code' => $response->getStatusCode(),
-                        'response' => strlen($responseContent) > 5_000
-                            ? substr($responseContent, 0, 5_000) . '...'
-                            : $responseContent,
-                    ]);
-                    
-                    // Create error response data structure for JSON parsing errors
-                    $responseData = [
-                        'errors' => [
-                            [
-                                'code' => 'JSON_PARSE_ERROR',
-                                'message' => 'Failed to parse gateway response',
-                                'httpStatusCode' => $response->getStatusCode(),
-                            ]
-                        ],
-                    ];
-                }
-            }
+            $responseData = $this->parseJsonResponse($responseContent, $contentType, $response->getStatusCode());
         }
 
         return $this->createResponse($responseData, $response->getStatusCode());
+    }
+
+    protected function parseJsonResponse(string $responseContent, string $contentType, int $statusCode): array
+    {
+        $isJsonResponse = str_contains(strtolower($contentType), 'application/json')
+            || str_contains(strtolower($contentType), 'text/json');
+
+        if (!$isJsonResponse && !empty($responseContent)) {
+            Log::warning('[Worldline] Non-JSON response received', [
+                'content_type' => $contentType,
+                'status_code' => $statusCode,
+                'response_preview' => strlen($responseContent) > 1000
+                    ? substr($responseContent, 0, 1000) . '...'
+                    : $responseContent,
+            ]);
+
+            return [
+                'errors' => [
+                    [
+                        'code' => 'GATEWAY_ERROR',
+                        'message' => 'Invalid response from payment gateway',
+                        'httpStatusCode' => $statusCode,
+                    ]
+                ],
+            ];
+        }
+
+        try {
+            return json_decode($responseContent, true, flags: JSON_THROW_ON_ERROR);
+        } catch (JsonException $e) {
+            Log::warning('[Worldline] JSON parsing error', [
+                'json_error' => $e->getMessage(),
+                'content_type' => $contentType,
+                'status_code' => $statusCode,
+                'response' => strlen($responseContent) > 5_000
+                    ? substr($responseContent, 0, 5_000) . '...'
+                    : $responseContent,
+            ]);
+
+            return [
+                'errors' => [
+                    [
+                        'code' => 'JSON_PARSE_ERROR',
+                        'message' => 'Failed to parse gateway response',
+                        'httpStatusCode' => $statusCode,
+                    ]
+                ],
+            ];
+        }
     }
 
     /**

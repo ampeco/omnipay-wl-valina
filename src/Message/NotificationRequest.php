@@ -38,13 +38,14 @@ class NotificationRequest extends AbstractRequest
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-        $exec = curl_exec($ch);
-        $statusCode = curl_getinfo($ch, \CURLINFO_RESPONSE_CODE);
-        return $this->createResponse(
-            json_decode($exec, true, flags: JSON_THROW_ON_ERROR),
-            $statusCode,
-        );
+        $responseContent = curl_exec($ch);
+        $statusCode = curl_getinfo($ch, CURLINFO_RESPONSE_CODE);
+        $contentType = curl_getinfo($ch, CURLINFO_CONTENT_TYPE) ?: '';
+        curl_close($ch);
 
+        $responseData = $this->parseJsonResponse($responseContent, $contentType, $statusCode);
+
+        return $this->createResponse($responseData, $statusCode);
     }
 
     protected function createResponse(array $data, int $statusCode): Response
