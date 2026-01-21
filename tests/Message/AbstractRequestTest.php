@@ -81,8 +81,10 @@ class AbstractRequestTest extends TestCase
         
         $responseData = $response->getData();
         $this->assertArrayHasKey('errors', $responseData);
-        $this->assertEquals('GATEWAY_ERROR', $responseData['errors'][0]['code']);
+        $this->assertEquals('GATEWAY_ERROR', $responseData['errors'][0]['id']);
+        $this->assertEquals(500, $responseData['errors'][0]['errorCode']);
         $this->assertEquals('Invalid response from payment gateway', $responseData['errors'][0]['message']);
+        $this->assertFalse($response->isSuccessful());
     }
 
     #[Test]
@@ -108,8 +110,10 @@ class AbstractRequestTest extends TestCase
         
         $responseData = $response->getData();
         $this->assertArrayHasKey('errors', $responseData);
-        $this->assertEquals('GATEWAY_ERROR', $responseData['errors'][0]['code']);
+        $this->assertEquals('GATEWAY_ERROR', $responseData['errors'][0]['id']);
+        $this->assertEquals(503, $responseData['errors'][0]['errorCode']);
         $this->assertEquals('Invalid response from payment gateway', $responseData['errors'][0]['message']);
+        $this->assertFalse($response->isSuccessful());
     }
 
     #[Test]
@@ -135,7 +139,9 @@ class AbstractRequestTest extends TestCase
         
         $responseData = $response->getData();
         $this->assertArrayHasKey('errors', $responseData);
-        $this->assertEquals('GATEWAY_ERROR', $responseData['errors'][0]['code']);
+        $this->assertEquals('GATEWAY_ERROR', $responseData['errors'][0]['id']);
+        $this->assertEquals(504, $responseData['errors'][0]['errorCode']);
+        $this->assertFalse($response->isSuccessful());
     }
 
     #[Test]
@@ -161,8 +167,10 @@ class AbstractRequestTest extends TestCase
         
         $responseData = $response->getData();
         $this->assertArrayHasKey('errors', $responseData);
-        $this->assertEquals('JSON_PARSE_ERROR', $responseData['errors'][0]['code']);
-        $this->assertEquals('Failed to parse gateway response', $responseData['errors'][0]['message']);
+        $this->assertEquals('JSON_PARSE_ERROR', $responseData['errors'][0]['id']);
+        $this->assertEquals(400, $responseData['errors'][0]['errorCode']);
+        $this->assertStringStartsWith('Failed to parse gateway response:', $responseData['errors'][0]['message']);
+        $this->assertFalse($response->isSuccessful());
     }
 
     #[Test]
@@ -215,7 +223,32 @@ class AbstractRequestTest extends TestCase
         
         $responseData = $result->getData();
         $this->assertArrayHasKey('errors', $responseData);
-        $this->assertEquals('GATEWAY_ERROR', $responseData['errors'][0]['code']);
+        $this->assertEquals('GATEWAY_ERROR', $responseData['errors'][0]['id']);
+        $this->assertEquals(500, $responseData['errors'][0]['errorCode']);
+        $this->assertFalse($result->isSuccessful());
+    }
+
+    #[Test]
+    public function it_returns_unsuccessful_when_http_200_but_errors_present(): void
+    {
+        $responseWithErrors = '{"errors": [{"id": "SOME_ERROR", "errorCode": 123, "message": "Something went wrong"}]}';
+
+        $guzzleResponse = new GuzzleResponse(
+            200,
+            ['Content-Type' => 'application/json'],
+            $responseWithErrors
+        );
+
+        $this->httpClient
+            ->shouldReceive('request')
+            ->once()
+            ->andReturn($guzzleResponse);
+
+        $response = $this->request->sendData(['test' => 'data']);
+
+        $this->assertInstanceOf(Response::class, $response);
+        $this->assertEquals(200, $response->getHttpStatusCode());
+        $this->assertFalse($response->isSuccessful());
     }
 
     protected function tearDown(): void
