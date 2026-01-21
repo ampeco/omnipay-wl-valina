@@ -99,9 +99,9 @@ abstract class AbstractRequest extends OmniPayAbstractRequest
             return [
                 'errors' => [
                     [
-                        'code' => 'GATEWAY_ERROR',
+                        'id' => 'GATEWAY_ERROR',
+                        'errorCode' => $statusCode,
                         'message' => 'Invalid response from payment gateway',
-                        'httpStatusCode' => $statusCode,
                     ]
                 ],
             ];
@@ -122,9 +122,9 @@ abstract class AbstractRequest extends OmniPayAbstractRequest
             return [
                 'errors' => [
                     [
-                        'code' => 'JSON_PARSE_ERROR',
-                        'message' => 'Failed to parse gateway response',
-                        'httpStatusCode' => $statusCode,
+                        'id' => 'JSON_PARSE_ERROR',
+                        'errorCode' => $statusCode,
+                        'message' => 'Failed to parse gateway response: ' . $e->getMessage(),
                     ]
                 ],
             ];

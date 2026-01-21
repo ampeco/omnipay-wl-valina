@@ -41,7 +41,21 @@ class Response extends AbstractResponse
      */
     public function isSuccessful(): bool
     {
+        if ($this->hasErrors()) {
+            return false;
+        }
+
         return $this->code >= 200 && $this->code < 300;
+    }
+
+    protected function hasErrors(): bool
+    {
+        $errors = $this->data['paymentResult']['payment']['statusOutput']['errors']
+            ?? $this->data['statusOutput']['errors']
+            ?? $this->data['errors']
+            ?? [];
+
+        return !empty($errors);
     }
 
     public function getTransactionReference(): ?string
