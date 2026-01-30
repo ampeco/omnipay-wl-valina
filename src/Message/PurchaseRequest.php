@@ -8,11 +8,7 @@ class PurchaseRequest extends AuthorizeRequest
     {
         $data = parent::getData();
 
-        if ($this->getUseFinalAuthInsteadOfSale()) {
-            $data['cardPaymentMethodSpecificInput']['authorizationMode'] = 'FINAL_AUTHORIZATION';
-        } else {
-            $data['cardPaymentMethodSpecificInput']['authorizationMode'] = 'SALE';
-        }
+        $data['cardPaymentMethodSpecificInput']['authorizationMode'] = 'FINAL_AUTHORIZATION';
 
         return $data;
     }

@@ -12,7 +12,7 @@ use PHPUnit\Framework\Attributes\Test;
 class GatewayTest extends TestCase
 {
     #[Test]
-    public function it_uses_pre_authorize_mode_when_session_authorization()
+    public function it_uses_final_authorization_mode_when_session_authorization()
     {
         $gateway = Omnipay::create('\\' . Gateway::class);
 
@@ -22,11 +22,11 @@ class GatewayTest extends TestCase
             'token' => 'token',
             'locale' => 'en_GB',
             'returnUrl' => 'http://test.com/return',
-            'useFinalAuthInsteadOfSale' => true,
+
         ]);
 
         $this->assertTrue($request instanceof AuthorizeRequest);
-        $this->assertEquals('PRE_AUTHORIZATION', $request->getData()['cardPaymentMethodSpecificInput']['authorizationMode']);
+        $this->assertEquals('FINAL_AUTHORIZATION', $request->getData()['cardPaymentMethodSpecificInput']['authorizationMode']);
     }
 
     #[Test]

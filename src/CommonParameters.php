@@ -204,19 +204,6 @@ trait CommonParameters
         return $this->getParameter('additionalInfo');
     }
 
-    /**
-     * TODO: Temporary, delete these with the removal of the feature flag
-     */
-    public function setUseFinalAuthInsteadOfSale(bool $value): void
-    {
-        $this->setParameter('useFinalAuthInsteadOfSale', $value);
-    }
-
-    public function getUseFinalAuthInsteadOfSale(): bool
-    {
-        return $this->getParameter('useFinalAuthInsteadOfSale') ?? false;
-    }
-
     public function setToken($value): void
     {
         $this->setParameter('token', $value);
