@@ -5,7 +5,9 @@ namespace Ampeco\OmnipayWlValina;
 use Ampeco\OmnipayWlValina\Message\AuthorizeRequest;
 use Ampeco\OmnipayWlValina\Message\CaptureRequest;
 use Ampeco\OmnipayWlValina\Message\CreateCardRequest;
+use Ampeco\OmnipayWlValina\Message\CreateHostedCheckoutRequest;
 use Ampeco\OmnipayWlValina\Message\DeleteCardRequest;
+use Ampeco\OmnipayWlValina\Message\GetHostedCheckoutRequest;
 use Ampeco\OmnipayWlValina\Message\GetPaymentDetailsRequest;
 use Ampeco\OmnipayWlValina\Message\GetPaymentRequest;
 use Ampeco\OmnipayWlValina\Message\InitialPurchaseRequest;
@@ -43,6 +45,21 @@ class Gateway extends AbstractGateway
     public function createCard(array $options = [])
     {
         return $this->createRequest(CreateCardRequest::class, $options);
+    }
+
+    public function createHostedCheckout(array $options = [])
+    {
+        return $this->createRequest(CreateHostedCheckoutRequest::class, $options);
+    }
+
+    public function getHostedCheckout(array $parameters = [])
+    {
+        return $this->createRequest(GetHostedCheckoutRequest::class, $parameters);
+    }
+
+    public function isHostedCheckoutReference(string $reference): bool
+    {
+        return (bool) preg_match('/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i', $reference);
     }
 
     public function acceptNotification(array $requestData)

@@ -244,4 +244,24 @@ trait CommonParameters
         return $this->getParameter('threeDSChallengeCanvasSize');
     }
 
+    public function setHostedCheckoutId($value): void
+    {
+        $this->setParameter('hostedCheckoutId', $value);
+    }
+
+    public function getHostedCheckoutId()
+    {
+        return $this->getParameter('hostedCheckoutId');
+    }
+
+    public function setReturnUrl($value): void
+    {
+        $this->setParameter('returnUrl', $value);
+    }
+
+    public function getReturnUrl()
+    {
+        return $this->getParameter('returnUrl');
+    }
+
 }
