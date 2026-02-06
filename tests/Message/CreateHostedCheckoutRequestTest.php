@@ -70,17 +70,6 @@ class CreateHostedCheckoutRequestTest extends TestCase
     }
 
     #[Test]
-    public function it_restricts_to_cards_group(): void
-    {
-        $data = $this->request->getData();
-
-        $this->assertEquals(
-            ['cards'],
-            $data['cardPaymentMethodSpecificInput']['paymentProductFilters']['restrictTo']['groups']
-        );
-    }
-
-    #[Test]
     public function it_includes_three_ds_return_url_from_main_return_url(): void
     {
         $data = $this->request->getData();

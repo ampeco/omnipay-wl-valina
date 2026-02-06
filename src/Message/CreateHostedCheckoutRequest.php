@@ -18,11 +18,18 @@ class CreateHostedCheckoutRequest extends AbstractRequest
 
     public function getData(): array
     {
+        $paymentProductFilters = $this->getPaymentProductFilters() ?? [
+            'restrictTo' => [
+                'groups' => ['cards'],
+            ],
+        ];
+
         $data = [
             'hostedCheckoutSpecificInput' => array_filter([
                 'returnUrl' => $this->getReturnUrl(),
                 'locale' => $this->getLocale(),
                 'variant' => $this->getTemplate(),
+                'paymentProductFilters' => $paymentProductFilters,
             ]),
             'order' => [
                 'amountOfMoney' => [
@@ -40,11 +47,6 @@ class CreateHostedCheckoutRequest extends AbstractRequest
                 'threeDSecure' => [
                     'redirectionData' => [
                         'returnUrl' => $this->getThreeDSReturnUrl() ?? $this->getReturnUrl(),
-                    ],
-                ],
-                'paymentProductFilters' => [
-                    'restrictTo' => [
-                        'groups' => ['cards'],
                     ],
                 ],
             ],

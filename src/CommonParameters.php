@@ -264,4 +264,14 @@ trait CommonParameters
         return $this->getParameter('returnUrl');
     }
 
+    public function setPaymentProductFilters(?array $value): void
+    {
+        $this->setParameter('paymentProductFilters', $value);
+    }
+
+    public function getPaymentProductFilters(): ?array
+    {
+        return $this->getParameter('paymentProductFilters');
+    }
+
 }
