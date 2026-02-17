@@ -19,9 +19,9 @@ class CreateHostedCheckoutRequest extends AbstractRequest
     public function getData(): array
     {
         $paymentProductFilters = $this->getPaymentProductFilters() ?? [
-            'restrictTo' => [
-                'groups' => ['cards'],
-            ],
+//            'restrictTo' => [
+//                'groups' => ['cards'],
+//            ],
         ];
 
         $data = [
@@ -49,6 +49,14 @@ class CreateHostedCheckoutRequest extends AbstractRequest
                         'returnUrl' => $this->getThreeDSReturnUrl() ?? $this->getReturnUrl(),
                     ],
                 ],
+            ],
+            'mobilePaymentMethodSpecificInput' => [
+              'paymentProduct320SpecificInput' => [
+                'tokenize' => true,
+              ],
+                'paymentProduct302SpecificInput' => [
+                    'tokenize' => true,
+                ]
             ],
         ];
 

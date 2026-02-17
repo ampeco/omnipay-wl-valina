@@ -58,10 +58,16 @@ class GetPaymentResponse extends Response
 
     public function getCardNumber()
     {
-        $maskedCardNumber = @$this->data['paymentOutput']['cardPaymentMethodSpecificOutput']['card']['cardNumber'];
-        $cardBin = $this->getCardBin();
+        $cardOutput = $this->data['paymentOutput']['cardPaymentMethodSpecificOutput']['card'] ?? null;
 
-        return substr_replace($maskedCardNumber, $cardBin, 0, strlen($cardBin));
+        if ($cardOutput) {
+            $maskedCardNumber = $cardOutput['cardNumber'] ?? '';
+            $cardBin = $cardOutput['bin'] ?? '';
+
+            return substr_replace($maskedCardNumber, $cardBin, 0, strlen($cardBin));
+        }
+
+        return $this->data['paymentOutput']['mobilePaymentMethodSpecificOutput']['paymentData']['dpan'] ?? null;
     }
 
     public function getCardBin()
@@ -71,6 +77,19 @@ class GetPaymentResponse extends Response
 
     public function getExpiryDate()
     {
-        return @$this->data['paymentOutput']['cardPaymentMethodSpecificOutput']['card']['expiryDate'];
+        return $this->data['paymentOutput']['cardPaymentMethodSpecificOutput']['card']['expiryDate']
+            ?? $this->data['paymentOutput']['mobilePaymentMethodSpecificOutput']['paymentData']['expiryDate']
+            ?? null;
     }
+
+    public function getMobilePaymentProductId()
+    {
+        return $this->data['paymentOutput']['mobilePaymentMethodSpecificOutput']['paymentProductId'] ?? null;
+    }
+
+    public function getNetwork(): ?string
+    {
+        return $this->data['paymentOutput']['mobilePaymentMethodSpecificOutput']['network'] ?? null;
+    }
+
 }

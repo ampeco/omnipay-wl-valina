@@ -37,4 +37,9 @@ class CreateHostedCheckoutResponse extends Response implements RedirectResponseI
     {
         return $this->data['hostedCheckoutId'] ?? null;
     }
+
+    public function getPaymentId(): string
+    {
+        return $this->data['createdPaymentOutput']['payment']['id'] ?? '';
+    }
 }
